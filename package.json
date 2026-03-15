@@ -1,8 +1,16 @@
 {
   "name": "tpn-monorepo",
   "private": true,
+  "scripts": {
+    "mobile": "cd apps/mobile && npx expo start",
+    "mobile:android": "cd apps/mobile && npx expo start --android",
+    "mobile:ios": "cd apps/mobile && npx expo start --ios"
+  },
   "workspaces": [
     "packages/*",
     "apps/*"
-  ]
+  ],
+  "devDependencies": {
+    "babel-preset-expo": "~54.0.10"
+  }
 }

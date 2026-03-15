@@ -8,7 +8,6 @@ const MOCK_ARTICLES: Article[] = [
     category: 'Economy',
     timestamp: new Date().toISOString(),
     isUrgent: true,
-    imageUrl: 'https://images.unsplash.com/photo-1611974717482-48a0029d470d?auto=format&fit=crop&q=80&w=800',
     source: 'Financial Times'
   },
   {
@@ -18,7 +17,6 @@ const MOCK_ARTICLES: Article[] = [
     category: 'Defence and Security',
     timestamp: new Date(Date.now() - 3600000).toISOString(),
     isUrgent: false,
-    imageUrl: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800',
     source: 'Tech Reports'
   }
 ];
@@ -34,7 +32,6 @@ function mapArticle(article: any, index: number): Article {
     timestamp: article.date || article.timestamp || new Date().toISOString(),
     date: article.date || article.timestamp || new Date().toISOString(),
     isUrgent: article.isUrgent || false,
-    imageUrl: article.imageUrl || 'https://picsum.photos/seed/default/800/400',
     source: article.author || 'tpn Internal',
     author: article.author || 'Unknown',
     languages: article.languages || undefined,
