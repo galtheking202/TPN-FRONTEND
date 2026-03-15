@@ -1,0 +1,8 @@
+
+{
+  "name": "tpn - the people news",
+  "description": "Independent news for the people, delivered with clarity and focus.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

@@ -1,0 +1,114 @@
+/* ── Theme tokens ─────────────────────────────────── */
+:root {
+  --bg:           #FAF7F0;
+  --bg-muted:     #EDEAE3;
+  --text:         #1E1A14;
+  --text-muted:   rgba(30,26,20,0.6);
+  --accent:       #D4A843;
+  --border:       #EDEAE3;
+  --surface-95:   rgba(250,247,240,0.95);
+}
+
+html.dark {
+  --bg:           #141210;
+  --bg-muted:     #1F1C18;
+  --text:         #E5E2DB;
+  --text-muted:   rgba(229,226,219,0.6);
+  --accent:       #D4A843;
+  --border:       #2A2620;
+  --surface-95:   rgba(20,18,16,0.95);
+}
+
+/* ── Dark overrides: backgrounds ──────────────────── */
+html.dark .bg-\[\#FAF7F0\]             { background-color: var(--bg) !important; }
+html.dark .bg-\[\#FAF7F0\]\/95        { background-color: var(--surface-95) !important; }
+html.dark .bg-\[\#EDEAE3\]            { background-color: var(--bg-muted) !important; }
+html.dark .bg-\[\#EDEAE3\]\/40        { background-color: rgba(31,28,24,0.4) !important; }
+html.dark .bg-\[\#EDEAE3\]\/30        { background-color: rgba(31,28,24,0.3) !important; }
+
+/* ── Dark overrides: text ─────────────────────────── */
+html.dark .text-\[\#1E1A14\]          { color: var(--text) !important; }
+html.dark .text-\[\#1E1A14\]\/70      { color: rgba(229,226,219,0.7) !important; }
+html.dark .text-\[\#1E1A14\]\/60      { color: rgba(229,226,219,0.6) !important; }
+html.dark .text-\[\#1E1A14\]\/50      { color: rgba(229,226,219,0.5) !important; }
+html.dark .text-\[\#1E1A14\]\/40      { color: rgba(229,226,219,0.4) !important; }
+html.dark .text-\[\#1E1A14\]\/30      { color: rgba(229,226,219,0.3) !important; }
+html.dark .text-\[\#1E1A14\]\/20      { color: rgba(229,226,219,0.2) !important; }
+
+/* ── Dark overrides: borders ──────────────────────── */
+html.dark .border-\[\#EDEAE3\]        { border-color: var(--border) !important; }
+html.dark .border-\[\#EDEAE3\]\/60    { border-color: rgba(42,38,32,0.6) !important; }
+
+/* ── Dark overrides: placeholders ────────────────────*/
+html.dark .placeholder-\[\#1E1A14\]\/40::placeholder { color: rgba(229,226,219,0.4) !important; }
+
+/* ── Dark overrides: gradients (edge fades) ───────── */
+html.dark .from-\[\#FAF7F0\]          { --tw-gradient-from: var(--bg) !important; }
+html.dark .to-\[\#FAF7F0\]            { --tw-gradient-to:   var(--bg) !important; }
+
+/* ── Dark: toast / ticker (stays inverted) ─────────── */
+html.dark .bg-\[\#1E1A14\]            { background-color: #E5E2DB !important; }
+html.dark .text-\[\#FAF7F0\]          { color: #1E1A14 !important; }
+
+/* ── Shared utilities ─────────────────────────────── */
+.mono { font-family: 'IBM Plex Mono', monospace; }
+
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-ticker {
+  display: inline-block;
+  white-space: nowrap;
+  animation: ticker 40s linear infinite;
+}
+.animate-ticker:hover { animation-play-state: paused; }
+
+::selection {
+  background-color: #D4A843;
+  color: #1E1A14;
+}
+
+/* ── Article body typography ───────────────────────── */
+.article-body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "liga" 1, "kern" 1;
+  hyphens: auto;
+}
+
+.article-body p:first-child::first-letter {
+  float: left;
+  font-family: 'Playfair Display', serif;
+  font-size: 4.5em;
+  font-weight: 900;
+  line-height: 0.82;
+  padding-right: 0.1em;
+  padding-top: 0.05em;
+  color: #D4A843;
+}
+
+html.dark .article-body p:first-child::first-letter {
+  color: #D4A843;
+}
+
+/* ── Section break ornament ────────────────────────── */
+.article-section-break {
+  text-align: center;
+  color: #D4A843;
+  letter-spacing: 0.5em;
+  font-size: 1.1em;
+  margin: 1rem 0;
+  opacity: 0.6;
+  user-select: none;
+}
+
+/* Disable drop cap for RTL scripts (Hebrew, Arabic) */
+[dir="rtl"] .article-body p:first-child::first-letter {
+  float: none;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  padding: 0;
+  color: inherit;
+}

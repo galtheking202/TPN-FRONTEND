@@ -1,0 +1,61 @@
+{
+  "app": {
+    "title": "tpn",
+    "subtitle": "أخبار الشعب"
+  },
+  "search": {
+    "placeholder": "البحث في المقالات...",
+    "aria": "البحث في المقالات"
+  },
+  "header": {
+    "live": "مباشر",
+    "region_label": "المنطقة:",
+    "language_label": "اللغة:",
+    "all_regions": "جميع المناطق"
+  },
+  "categories": {
+    "ALL": "الكل",
+    "Politics": "السياسة",
+    "Economy": "الاقتصاد",
+    "Health": "الصحة",
+    "Technology": "التكنولوجيا",
+    "Environment": "البيئة",
+    "Defence and Security": "الدفاع والأمن",
+    "Sports": "الرياضة"
+  },
+  "article": {
+    "untitled": "بدون عنوان",
+    "no_summary": "لا يوجد ملخص متاح.",
+    "no_content": "لا يوجد محتوى إضافي متاح لهذا المقال.",
+    "date_unknown": "تاريخ غير معروف",
+    "breaking": "عاجل",
+    "default_source": "أخبار الشعب",
+    "credibility_high": "عالية",
+    "credibility_moderate": "متوسطة",
+    "credibility_low": "منخفضة",
+    "credibility_info_aria": "ما هو درجة المصداقية؟",
+    "credibility_tooltip": "الدرجة: {{score}}/10 — تُحسب بتحليل موثوقية المصدر، والتحقق من مصادر متعددة، والدقة الواقعية، وسمعة المؤلف، وسجل النشر.",
+    "sources": "المصادر",
+    "no_sources": "لا توجد مصادر خارجية مدرجة.",
+    "by": "بقلم",
+    "back": "العودة إلى الأخبار",
+    "back_aria": "العودة إلى خلاصة الأخبار",
+    "read_aria": "اقرأ: {{title}}",
+    "image_aria": "صورة لـ: {{title}}",
+    "read_full_aria": "اقرأ المقال كاملاً: {{title}}",
+    "external_source_aria": "مصدر خارجي {{index}}"
+  },
+  "feed": {
+    "loading_aria": "جار تحميل المقالات",
+    "error": "تعذّر تحميل الأخبار. يرجى التحقق من اتصالك.",
+    "try_again": "حاول مجددًا",
+    "no_articles": "لم يتم العثور على مقالات",
+    "no_articles_category": "جرب فئة أخرى أو ",
+    "no_articles_region": "جرب منطقة مختلفة أو ",
+    "no_articles_broaden": "وسّع نطاق بحثك."
+  },
+  "ticker": {
+    "live": "مباشر",
+    "aria": "شريط أخبار مباشر — مرّر أو ركّز للإيقاف المؤقت"
+  }
+}

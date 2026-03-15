@@ -1,0 +1,61 @@
+{
+  "app": {
+    "title": "tpn",
+    "subtitle": "חדשות העם"
+  },
+  "search": {
+    "placeholder": "חיפוש כתבות...",
+    "aria": "חיפוש כתבות"
+  },
+  "header": {
+    "live": "שידור חי",
+    "region_label": "אזור:",
+    "language_label": "שפה:",
+    "all_regions": "כל האזורים"
+  },
+  "categories": {
+    "ALL": "הכל",
+    "Politics": "פוליטיקה",
+    "Economy": "כלכלה",
+    "Health": "בריאות",
+    "Technology": "טכנולוגיה",
+    "Environment": "סביבה",
+    "Defence and Security": "ביטחון",
+    "Sports": "ספורט"
+  },
+  "article": {
+    "untitled": "ללא כותרת",
+    "no_summary": "אין תקציר זמין.",
+    "no_content": "אין תוכן נוסף זמין לכתבה זו.",
+    "date_unknown": "תאריך לא ידוע",
+    "breaking": "בלעדי",
+    "default_source": "חדשות העם",
+    "credibility_high": "גבוהה",
+    "credibility_moderate": "בינונית",
+    "credibility_low": "נמוכה",
+    "credibility_info_aria": "מהו ציון האמינות?",
+    "credibility_tooltip": "ציון: {{score}}/10 — מחושב על ידי ניתוח אמינות המקור, אישוש ממקורות מרובים, דיוק עובדתי, מוניטין המחבר ורקורד הפרסום.",
+    "sources": "מקורות",
+    "no_sources": "אין מקורות חיצוניים.",
+    "by": "מאת",
+    "back": "חזרה לחדשות",
+    "back_aria": "חזרה לעדכון החדשות",
+    "read_aria": "קרא: {{title}}",
+    "image_aria": "תמונה עבור: {{title}}",
+    "read_full_aria": "קרא כתבה מלאה: {{title}}",
+    "external_source_aria": "מקור חיצוני {{index}}"
+  },
+  "feed": {
+    "loading_aria": "טוען כתבות",
+    "error": "לא ניתן לטעון חדשות. אנא בדוק את החיבור שלך.",
+    "try_again": "נסה שוב",
+    "no_articles": "לא נמצאו כתבות",
+    "no_articles_category": "נסה קטגוריה אחרת או ",
+    "no_articles_region": "נסה אזור שונה או ",
+    "no_articles_broaden": "הרחב את החיפוש."
+  },
+  "ticker": {
+    "live": "שידור חי",
+    "aria": "טיקר חדשות חי — רחף או מקד כדי להשהות"
+  }
+}

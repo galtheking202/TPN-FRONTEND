@@ -1,0 +1,61 @@
+{
+  "app": {
+    "title": "tpn",
+    "subtitle": "Les Nouvelles du Peuple"
+  },
+  "search": {
+    "placeholder": "Rechercher des articles...",
+    "aria": "Rechercher des articles"
+  },
+  "header": {
+    "live": "EN DIRECT",
+    "region_label": "Région :",
+    "language_label": "Langue :",
+    "all_regions": "Toutes les Régions"
+  },
+  "categories": {
+    "ALL": "TOUT",
+    "Politics": "Politique",
+    "Economy": "Économie",
+    "Health": "Santé",
+    "Technology": "Technologie",
+    "Environment": "Environnement",
+    "Defence and Security": "Défense et Sécurité",
+    "Sports": "Sports"
+  },
+  "article": {
+    "untitled": "Sans titre",
+    "no_summary": "Aucun résumé disponible.",
+    "no_content": "Aucun contenu supplémentaire disponible pour cet article.",
+    "date_unknown": "Date inconnue",
+    "breaking": "URGENT",
+    "default_source": "Les Nouvelles du Peuple",
+    "credibility_high": "ÉLEVÉE",
+    "credibility_moderate": "MODÉRÉE",
+    "credibility_low": "FAIBLE",
+    "credibility_info_aria": "Qu'est-ce que le score de crédibilité ?",
+    "credibility_tooltip": "Score : {{score}}/10 — Calculé en analysant la fiabilité de la source, la corroboration avec plusieurs sources, l'exactitude factuelle, la réputation de l'auteur et le bilan de publication.",
+    "sources": "Sources",
+    "no_sources": "Aucune source externe répertoriée.",
+    "by": "Par",
+    "back": "Retour aux Nouvelles",
+    "back_aria": "Retour au fil d'actualité",
+    "read_aria": "Lire : {{title}}",
+    "image_aria": "Image pour : {{title}}",
+    "read_full_aria": "Lire l'article complet : {{title}}",
+    "external_source_aria": "Source externe {{index}}"
+  },
+  "feed": {
+    "loading_aria": "Chargement des articles",
+    "error": "Impossible de charger les nouvelles. Veuillez vérifier votre connexion.",
+    "try_again": "Réessayer",
+    "no_articles": "Aucun article trouvé",
+    "no_articles_category": "Essayez une autre catégorie ou ",
+    "no_articles_region": "essayez une autre région ou ",
+    "no_articles_broaden": "élargissez votre recherche."
+  },
+  "ticker": {
+    "live": "En Direct",
+    "aria": "Fil d'actualité en direct — survolez ou focalisez pour mettre en pause"
+  }
+}

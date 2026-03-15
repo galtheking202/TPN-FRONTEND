@@ -1,0 +1,61 @@
+{
+  "app": {
+    "title": "tpn",
+    "subtitle": "The People News"
+  },
+  "search": {
+    "placeholder": "Search articles...",
+    "aria": "Search articles"
+  },
+  "header": {
+    "live": "LIVE",
+    "region_label": "Region:",
+    "language_label": "Language:",
+    "all_regions": "All Regions"
+  },
+  "categories": {
+    "ALL": "ALL",
+    "Politics": "Politics",
+    "Economy": "Economy",
+    "Health": "Health",
+    "Technology": "Technology",
+    "Environment": "Environment",
+    "Defence and Security": "Defence and Security",
+    "Sports": "Sports"
+  },
+  "article": {
+    "untitled": "Untitled",
+    "no_summary": "No summary available.",
+    "no_content": "No additional content available for this article.",
+    "date_unknown": "Date unknown",
+    "breaking": "BREAKING",
+    "default_source": "The People News",
+    "credibility_high": "HIGH",
+    "credibility_moderate": "MODERATE",
+    "credibility_low": "LOW",
+    "credibility_info_aria": "What is the credibility score?",
+    "credibility_tooltip": "Score: {{score}}/10 — Calculated by analyzing source reliability, corroboration with multiple sources, factual accuracy, author reputation, and publication track record.",
+    "sources": "Sources",
+    "no_sources": "No external sources listed.",
+    "by": "By",
+    "back": "Back to News",
+    "back_aria": "Back to news feed",
+    "read_aria": "Read: {{title}}",
+    "image_aria": "Image for: {{title}}",
+    "read_full_aria": "Read full article: {{title}}",
+    "external_source_aria": "External source {{index}}"
+  },
+  "feed": {
+    "loading_aria": "Loading articles",
+    "error": "Unable to load news. Please check your connection.",
+    "try_again": "Try Again",
+    "no_articles": "No articles found",
+    "no_articles_category": "Try another category or ",
+    "no_articles_region": "try a different region or ",
+    "no_articles_broaden": "broaden your search."
+  },
+  "ticker": {
+    "live": "Live",
+    "aria": "Live news ticker — hover or focus to pause"
+  }
+}
