@@ -59,7 +59,6 @@ export default function ArticleListScreen({ navigation }: Props) {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [activeCategory, setActiveCategory] = useState('ALL');
-  const [activeRegion, setActiveRegion] = useState('ALL');
   const [searchVisible, setSearchVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const searchAnim = useRef(new Animated.Value(0)).current;
@@ -85,9 +84,6 @@ export default function ArticleListScreen({ navigation }: Props) {
     Animated.timing(searchAnim, { toValue, duration: 200, useNativeDriver: false }).start();
   };
 
-  // Extract unique regions from articles
-  const regions = ['ALL', ...Array.from(new Set(articles.map(a => a.region).filter(Boolean) as string[])).sort()];
-
   // Active saved filters
   const activeFilters = savedFilters.filter(f => f.enabled);
 
@@ -101,10 +97,9 @@ export default function ArticleListScreen({ navigation }: Props) {
       });
     }
     const catOk = activeCategory === 'ALL' || a.category === activeCategory;
-    const regionOk = activeRegion === 'ALL' || a.region === activeRegion;
     const q = searchQuery.toLowerCase();
     const searchOk = !q || (a.title ?? '').toLowerCase().includes(q) || (a.summary ?? '').toLowerCase().includes(q);
-    return catOk && regionOk && searchOk;
+    return catOk && searchOk;
   });
 
   const searchHeight = searchAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 52] });
@@ -195,28 +190,6 @@ export default function ArticleListScreen({ navigation }: Props) {
           );
         })}
       </ScrollView>
-
-      {/* Region filter row */}
-      {regions.length > 1 && (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.regionScroll} contentContainerStyle={styles.regionContent}>
-          <View style={styles.regionLabel}>
-            <Ionicons name="location-outline" size={11} color={COLORS.primary} />
-            <Text style={styles.regionLabelText}>REGION</Text>
-          </View>
-          {regions.map((r, i) => {
-            const active = r === activeRegion && activeFilters.length === 0;
-            return (
-              <Pressable
-                key={r}
-                style={[styles.regionChip, active && styles.regionChipActive, i < regions.length - 1 && { marginRight: 6 }]}
-                onPress={() => setActiveRegion(r)}
-              >
-                <Text style={[styles.regionChipText, active && styles.regionChipTextActive]}>{r}</Text>
-              </Pressable>
-            );
-          })}
-        </ScrollView>
-      )}
 
       {/* Article List */}
       <FlatList
@@ -359,15 +332,6 @@ const styles = StyleSheet.create({
   chip: { paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20, borderWidth: 1, borderColor: COLORS.border, backgroundColor: 'transparent', height: 32, justifyContent: 'center' },
   chipText: { color: COLORS.textMuted, fontSize: 12, fontWeight: '600' },
   chipTextActive: { color: COLORS.text },
-
-  regionScroll: { maxHeight: 36, flexGrow: 0 },
-  regionContent: { paddingHorizontal: 16, alignItems: 'center', paddingBottom: 6 },
-  regionLabel: { flexDirection: 'row', alignItems: 'center', gap: 3, marginRight: 8 },
-  regionLabelText: { color: COLORS.primary, fontSize: 9, fontWeight: '800', letterSpacing: 1 },
-  regionChip: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12, borderWidth: 1, borderColor: COLORS.border },
-  regionChipActive: { backgroundColor: COLORS.primary + '22', borderColor: COLORS.primary },
-  regionChipText: { color: COLORS.textMuted, fontSize: 11 },
-  regionChipTextActive: { color: COLORS.primary, fontWeight: '600' },
 
   listContent: { paddingBottom: 8 },
   emptyContainer: { flex: 1 },
