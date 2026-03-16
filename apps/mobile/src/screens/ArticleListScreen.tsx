@@ -52,7 +52,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ArticleList'>;
 export default function ArticleListScreen({ navigation }: Props) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
-  const { savedFilters, toggleFilter, isPinned, togglePin, language } = useAppContext();
+  const { savedFilters, toggleFilter, isPinned, togglePin, language, isRTL } = useAppContext();
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -123,7 +123,7 @@ const [searchVisible, setSearchVisible] = useState(false);
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { direction: isRTL ? 'rtl' : 'ltr' }]}>
       <StatusBar barStyle="light-content" backgroundColor={COLORS.bg} />
 
       {/* Header */}
@@ -220,23 +220,24 @@ const [searchVisible, setSearchVisible] = useState(false);
 }
 
 function FeaturedCard({ article, title, pinned, onPress, onPin }: { article: Article; title: string; pinned: boolean; onPress: () => void; onPin: () => void }) {
+  const { isRTL } = useAppContext();
   const catColor = CATEGORY_COLORS[article.category] ?? COLORS.primary;
   return (
     <Pressable style={styles.featured} onPress={onPress}>
       <ArticleImage uri={article.imageUrl} category={article.category} style={styles.featuredImage} />
       <View style={styles.featuredOverlay} />
-      <Pressable style={styles.pinBtn} onPress={onPin}>
+      <Pressable style={[styles.pinBtn, isRTL ? { left: 12, right: undefined } : { right: 12, left: undefined }]} onPress={onPin}>
         <Ionicons name={pinned ? 'bookmark' : 'bookmark-outline'} size={18} color={pinned ? COLORS.primary : '#fff'} />
       </Pressable>
-      <View style={styles.featuredContent}>
-        <View style={styles.featuredBadges}>
+      <View style={[styles.featuredContent, { direction: isRTL ? 'rtl' : 'ltr' }]}>
+        <View style={[styles.featuredBadges, { flexDirection: isRTL ? 'row-reverse' : 'row' }]}>
           {article.isUrgent && <View style={styles.breakingBadge}><Text style={styles.breakingText}>● BREAKING</Text></View>}
           <View style={[styles.categoryBadge, { backgroundColor: catColor + '22', borderColor: catColor }]}>
             <Text style={[styles.categoryBadgeText, { color: catColor }]}>{article.category.toUpperCase()}</Text>
           </View>
         </View>
-        <Text style={styles.featuredTitle} numberOfLines={3}>{title}</Text>
-        <View style={styles.featuredMeta}>
+        <Text style={[styles.featuredTitle, { textAlign: isRTL ? 'right' : 'left' }]} numberOfLines={3}>{title}</Text>
+        <View style={[styles.featuredMeta, { flexDirection: isRTL ? 'row-reverse' : 'row' }]}>
           <Text style={styles.metaSource}>{article.source}</Text>
           <Text style={styles.metaDot}>·</Text>
           <Text style={styles.metaTime}>{timeAgo(article.timestamp ?? article.date)}</Text>
@@ -248,11 +249,12 @@ function FeaturedCard({ article, title, pinned, onPress, onPin }: { article: Art
 }
 
 function ArticleCard({ article, title, summary, pinned, onPress, onPin }: { article: Article; title: string; summary: string; pinned: boolean; onPress: () => void; onPin: () => void }) {
+  const { isRTL } = useAppContext();
   const catColor = CATEGORY_COLORS[article.category] ?? COLORS.primary;
   return (
     <Pressable style={[styles.card, article.isUrgent && styles.cardUrgent]} onPress={onPress}>
       {article.isUrgent && <View style={styles.urgentStrip} />}
-      <View style={styles.cardBody}>
+      <View style={[styles.cardBody, { direction: isRTL ? 'rtl' : 'ltr' }]}>
         <View style={styles.cardTopRow}>
           <View style={[styles.categoryBadge, { backgroundColor: catColor + '22', borderColor: catColor }]}>
             <Text style={[styles.categoryBadgeText, { color: catColor }]}>{article.category.toUpperCase()}</Text>
@@ -322,7 +324,7 @@ listContent: { paddingBottom: 8 },
   featuredImage: { position: 'absolute', width: '100%', height: '100%' },
   imagePlaceholder: { backgroundColor: COLORS.surfaceRaised },
   featuredOverlay: { position: 'absolute', bottom: 0, left: 0, right: 0, height: '75%', backgroundColor: 'rgba(10,10,15,0.82)' },
-  pinBtn: { position: 'absolute', top: 12, right: 12, backgroundColor: 'rgba(10,10,15,0.5)', padding: 8, borderRadius: 20 },
+  pinBtn: { position: 'absolute', top: 12, backgroundColor: 'rgba(10,10,15,0.5)', padding: 8, borderRadius: 20 },
   featuredContent: { position: 'absolute', bottom: 0, left: 0, right: 0, padding: 16 },
   featuredBadges: { flexDirection: 'row', gap: 8, marginBottom: 8 },
   featuredTitle: { color: COLORS.text, fontSize: 18, fontWeight: '700', lineHeight: 24, marginBottom: 8 },

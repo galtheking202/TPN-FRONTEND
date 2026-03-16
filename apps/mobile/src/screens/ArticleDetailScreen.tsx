@@ -67,7 +67,7 @@ export default function ArticleDetailScreen({ navigation, route }: Props) {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { direction: isRTL ? 'rtl' : 'ltr' }]}>
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
 
       {/* Reading progress bar */}
