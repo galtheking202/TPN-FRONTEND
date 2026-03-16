@@ -34,10 +34,13 @@ export enum ReportLevel {
   CRITICAL = 'CRITICAL'
 }
 
+export type FilterType = 'notification' | 'viewing' | 'both';
+
 export interface SavedFilter {
   id: string;
   name: string;
   categories: string[];  // empty = match all categories
   regions: string[];     // empty = match all regions
   enabled: boolean;
+  filterType: FilterType; // 'notification' | 'viewing' | 'both'
 }

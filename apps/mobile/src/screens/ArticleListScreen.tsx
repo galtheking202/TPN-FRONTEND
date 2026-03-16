@@ -35,7 +35,6 @@ const CATEGORY_COLORS: Record<string, string> = {
   'Defence and Security': '#9747FF', Sports: '#FFB800',
 };
 
-const CATEGORIES = ['ALL', 'Politics', 'Economy', 'Technology', 'Health', 'Environment', 'Defence and Security', 'Sports'];
 
 function timeAgo(dateStr?: string): string {
   if (!dateStr) return '';
@@ -57,8 +56,7 @@ export default function ArticleListScreen({ navigation }: Props) {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [activeCategory, setActiveCategory] = useState('ALL');
-  const [searchVisible, setSearchVisible] = useState(false);
+const [searchVisible, setSearchVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const searchAnim = useRef(new Animated.Value(0)).current;
 
@@ -97,7 +95,7 @@ export default function ArticleListScreen({ navigation }: Props) {
         return catOk && regionOk;
       });
     }
-    const catOk = activeCategory === 'ALL' || a.category === activeCategory;
+    const catOk = true;
     const q = searchQuery.toLowerCase();
     const searchOk = !q || (a.title ?? '').toLowerCase().includes(q) || (a.summary ?? '').toLowerCase().includes(q);
     return catOk && searchOk;
@@ -183,26 +181,7 @@ export default function ArticleListScreen({ navigation }: Props) {
         </ScrollView>
       )}
 
-      {/* Category chips */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryScroll} contentContainerStyle={styles.categoryContent}>
-        {CATEGORIES.map((cat, i) => {
-          const active = cat === activeCategory && articleFilters.length === 0;
-          const color = cat === 'ALL' ? COLORS.primary : (CATEGORY_COLORS[cat] ?? COLORS.primary);
-          return (
-            <Pressable
-              key={cat}
-              style={[styles.chip, active && { backgroundColor: color, borderColor: color }, i < CATEGORIES.length - 1 && { marginRight: 8 }]}
-              onPress={() => { setActiveCategory(cat); }}
-            >
-              <Text style={[styles.chipText, active && styles.chipTextActive]}>
-                {t(`categories.${cat}`, { defaultValue: cat })}
-              </Text>
-            </Pressable>
-          );
-        })}
-      </ScrollView>
-
-      {/* Article List */}
+{/* Article List */}
       <FlatList
         data={filtered}
         keyExtractor={item => item.id}
@@ -215,7 +194,7 @@ export default function ArticleListScreen({ navigation }: Props) {
           </View>
         }
         renderItem={({ item, index }) =>
-          index === 0 && activeCategory === 'ALL' && !searchQuery && articleFilters.length === 0 ? (
+          index === 0 && !searchQuery && articleFilters.length === 0 ? (
             <FeaturedCard
               article={item}
               title={getTitle(item)}
@@ -328,18 +307,12 @@ const styles = StyleSheet.create({
   searchInner: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.surface, borderRadius: 10, borderWidth: 1, borderColor: COLORS.border, paddingHorizontal: 12, height: 40, marginBottom: 8 },
   searchInput: { flex: 1, color: COLORS.text, fontSize: 14 },
 
-  filterBanner: { maxHeight: 48, flexGrow: 0 },
-  filterBannerContent: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, gap: 8, paddingVertical: 8 },
-  filterTag: { flexDirection: 'row', alignItems: 'center', gap: 5, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, backgroundColor: COLORS.primary + '22', borderWidth: 1, borderColor: COLORS.primary + '55' },
-  filterTagText: { color: COLORS.primary, fontSize: 11, fontWeight: '600' },
+  filterBanner: { flexShrink: 0 },
+  filterBannerContent: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, gap: 8, paddingVertical: 10 },
+  filterTag: { flexDirection: 'row', alignItems: 'center', gap: 5, paddingHorizontal: 12, paddingVertical: 7, borderRadius: 14, backgroundColor: COLORS.primary + '22', borderWidth: 1, borderColor: COLORS.primary + '55' },
+  filterTagText: { color: COLORS.primary, fontSize: 12, fontWeight: '600' },
 
-  categoryScroll: { height: 48, flexGrow: 0 },
-  categoryContent: { paddingHorizontal: 16, paddingVertical: 8, alignItems: 'center' },
-  chip: { paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20, borderWidth: 1, borderColor: COLORS.border, backgroundColor: 'transparent', height: 32, justifyContent: 'center' },
-  chipText: { color: COLORS.textMuted, fontSize: 12, fontWeight: '600' },
-  chipTextActive: { color: COLORS.text },
-
-  listContent: { paddingBottom: 8 },
+listContent: { paddingBottom: 8 },
   emptyContainer: { flex: 1 },
   empty: { alignItems: 'center', justifyContent: 'center', paddingTop: 80, gap: 8 },
   emptyIcon: { fontSize: 36 },
