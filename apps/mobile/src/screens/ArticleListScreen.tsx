@@ -17,7 +17,6 @@ import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Article, createNewsService } from '@tpn/shared';
 import { useAppContext } from '../context/AppContext';
-import NewsTicker from '../components/NewsTicker';
 import ArticleImage from '../components/ArticleImage';
 import { RootStackParamList } from '../App';
 
@@ -84,13 +83,15 @@ export default function ArticleListScreen({ navigation }: Props) {
     Animated.timing(searchAnim, { toValue, duration: 200, useNativeDriver: false }).start();
   };
 
-  // Active saved filters
+  // All enabled filters (shown in banner)
   const activeFilters = savedFilters.filter(f => f.enabled);
+  // Only filters that affect article viewing
+  const articleFilters = activeFilters.filter(f => f.filterType === 'viewing' || f.filterType === 'both');
 
-  // Filter logic
+  // Filter logic — notification-only filters don't affect the list
   const filtered = articles.filter(a => {
-    if (activeFilters.length > 0) {
-      return activeFilters.some(f => {
+    if (articleFilters.length > 0) {
+      return articleFilters.some(f => {
         const catOk = f.categories.length === 0 || f.categories.includes(a.category);
         const regionOk = f.regions.length === 0 || f.regions.includes(a.region ?? '');
         return catOk && regionOk;
@@ -163,19 +164,29 @@ export default function ArticleListScreen({ navigation }: Props) {
       {activeFilters.length > 0 && (
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterBanner} contentContainerStyle={styles.filterBannerContent}>
           <Ionicons name="funnel" size={12} color={COLORS.primary} style={{ marginRight: 4 }} />
-          {activeFilters.map(f => (
-            <Pressable key={f.id} style={styles.filterTag} onPress={() => toggleFilter(f.id)}>
-              <Text style={styles.filterTagText}>{f.name}</Text>
-              <Ionicons name="close" size={10} color={COLORS.primary} />
-            </Pressable>
-          ))}
+          {activeFilters.map(f => {
+            const isNotifOnly = f.filterType === 'notification';
+            const isBoth = f.filterType === 'both';
+            const tagColor = isNotifOnly ? '#FFB800' : COLORS.primary;
+            return (
+              <Pressable key={f.id} style={[styles.filterTag, { backgroundColor: tagColor + '22', borderColor: tagColor + '88' }]} onPress={() => toggleFilter(f.id)}>
+                <Ionicons
+                  name={isNotifOnly ? 'notifications-outline' : isBoth ? 'layers-outline' : 'eye-outline'}
+                  size={10}
+                  color={tagColor}
+                />
+                <Text style={[styles.filterTagText, { color: tagColor }]}>{f.name}</Text>
+                <Ionicons name="close" size={10} color={tagColor} />
+              </Pressable>
+            );
+          })}
         </ScrollView>
       )}
 
       {/* Category chips */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryScroll} contentContainerStyle={styles.categoryContent}>
         {CATEGORIES.map((cat, i) => {
-          const active = cat === activeCategory && activeFilters.length === 0;
+          const active = cat === activeCategory && articleFilters.length === 0;
           const color = cat === 'ALL' ? COLORS.primary : (CATEGORY_COLORS[cat] ?? COLORS.primary);
           return (
             <Pressable
@@ -204,7 +215,7 @@ export default function ArticleListScreen({ navigation }: Props) {
           </View>
         }
         renderItem={({ item, index }) =>
-          index === 0 && activeCategory === 'ALL' && !searchQuery && activeFilters.length === 0 ? (
+          index === 0 && activeCategory === 'ALL' && !searchQuery && articleFilters.length === 0 ? (
             <FeaturedCard
               article={item}
               title={getTitle(item)}
@@ -225,11 +236,6 @@ export default function ArticleListScreen({ navigation }: Props) {
         }
       />
 
-      {/* News Ticker */}
-      <NewsTicker
-        articles={articles}
-        onPress={article => navigation.navigate('ArticleDetail', { article })}
-      />
     </View>
   );
 }
@@ -322,9 +328,9 @@ const styles = StyleSheet.create({
   searchInner: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.surface, borderRadius: 10, borderWidth: 1, borderColor: COLORS.border, paddingHorizontal: 12, height: 40, marginBottom: 8 },
   searchInput: { flex: 1, color: COLORS.text, fontSize: 14 },
 
-  filterBanner: { maxHeight: 36 },
-  filterBannerContent: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, gap: 6, paddingVertical: 6 },
-  filterTag: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 10, paddingVertical: 3, borderRadius: 12, backgroundColor: COLORS.primary + '22', borderWidth: 1, borderColor: COLORS.primary + '55' },
+  filterBanner: { maxHeight: 48, flexGrow: 0 },
+  filterBannerContent: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, gap: 8, paddingVertical: 8 },
+  filterTag: { flexDirection: 'row', alignItems: 'center', gap: 5, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, backgroundColor: COLORS.primary + '22', borderWidth: 1, borderColor: COLORS.primary + '55' },
   filterTagText: { color: COLORS.primary, fontSize: 11, fontWeight: '600' },
 
   categoryScroll: { height: 48, flexGrow: 0 },
