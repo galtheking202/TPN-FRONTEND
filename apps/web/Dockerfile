@@ -6,15 +6,20 @@ WORKDIR /app
 ARG VITE_API_URL
 ENV VITE_API_URL=$VITE_API_URL
 
-# Copy workspace root and shared package
-COPY package.json ./
+# Copy workspace manifests
+COPY package.json package-lock.json ./
+COPY tsconfig.json ./
+
+# Copy shared package
 COPY packages/shared ./packages/shared
 
 # Copy web app
-COPY apps/web/package.json apps/web/package-lock.json ./apps/web/
+COPY apps/web ./apps/web
+
+# Install deps from workspace root (resolves @tpn/shared)
 RUN npm install --workspace=apps/web
 
-COPY apps/web ./apps/web
+# Build
 RUN npm run build --workspace=apps/web
 
 # Stage 2: serve
