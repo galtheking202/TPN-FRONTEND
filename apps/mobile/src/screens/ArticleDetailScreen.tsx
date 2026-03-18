@@ -30,9 +30,16 @@ const CATEGORY_COLORS: Record<string, string> = {
   'Defence and Security': '#9747FF', Sports: '#FFB800',
 };
 
-function formatDate(dateStr?: string): string {
+function formatLocalDateTime(dateStr?: string): string {
   if (!dateStr) return '';
-  return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  const date = new Date(dateStr);
+  return date.toLocaleString(undefined, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 }
 
 function credibilityLabel(score: number): { label: string; color: string } {
@@ -130,7 +137,7 @@ export default function ArticleDetailScreen({ navigation, route }: Props) {
         <View style={[styles.metaRow, { flexDirection: isRTL ? 'row-reverse' : 'row' }]}>
           {article.author && <Text style={styles.metaText}><Text style={styles.metaLabel}>{t('article.by')} </Text>{article.author}</Text>}
           {article.source && <><Text style={styles.metaSep}>·</Text><Text style={styles.metaText}>{article.source}</Text></>}
-          {(article.date ?? article.timestamp) && <><Text style={styles.metaSep}>·</Text><Text style={styles.metaText}>{formatDate(article.date ?? article.timestamp)}</Text></>}
+          {(article.date ?? article.timestamp) && <><Text style={styles.metaSep}>·</Text><Text style={styles.metaText}>{formatLocalDateTime(article.date ?? article.timestamp)}</Text></>}
         </View>
 
         <View style={styles.divider} />

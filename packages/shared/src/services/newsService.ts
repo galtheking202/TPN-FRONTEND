@@ -46,7 +46,10 @@ export function createNewsService(apiUrl: string) {
   return {
     async fetchArticles(): Promise<Article[]> {
       try {
-        const response = await fetch(`${apiUrl}/articles`);
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 10000);
+        const response = await fetch(`${apiUrl}/articles`, { signal: controller.signal });
+        clearTimeout(timeout);
         if (response.ok) {
           const articles = await response.json();
           return articles.map(mapArticle);

@@ -11,6 +11,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import * as SplashScreen from 'expo-splash-screen';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
@@ -60,10 +61,18 @@ const [searchVisible, setSearchVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const searchAnim = useRef(new Animated.Value(0)).current;
 
+  const hasScrolledDown = useRef(false);
+
+  const initialLoad = useRef(true);
+
   const loadArticles = useCallback(async () => {
     const data = await newsService.fetchArticles();
     setArticles(data);
     setLoading(false);
+    if (initialLoad.current) {
+      initialLoad.current = false;
+      SplashScreen.hideAsync().catch(() => {});
+    }
   }, []);
 
   useEffect(() => { loadArticles(); }, [loadArticles]);
@@ -72,6 +81,15 @@ const [searchVisible, setSearchVisible] = useState(false);
     setRefreshing(true);
     await loadArticles();
     setRefreshing(false);
+  }, [loadArticles]);
+
+  const handleScroll = useCallback((event: any) => {
+    const y = event.nativeEvent.contentOffset.y;
+    if (y > 60) hasScrolledDown.current = true;
+    if (y <= 0 && hasScrolledDown.current) {
+      hasScrolledDown.current = false;
+      loadArticles();
+    }
   }, [loadArticles]);
 
   const toggleSearch = () => {
@@ -185,6 +203,8 @@ const [searchVisible, setSearchVisible] = useState(false);
       <FlatList
         data={filtered}
         keyExtractor={item => item.id}
+        onScroll={handleScroll}
+        scrollEventThrottle={32}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COLORS.primary} />}
         contentContainerStyle={filtered.length === 0 ? styles.emptyContainer : styles.listContent}
         ListEmptyComponent={
