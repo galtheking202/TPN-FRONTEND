@@ -9,6 +9,29 @@ const LOCALE_MAP: Record<LangCode, string> = {
   en: 'en-US', he: 'he-IL', fr: 'fr-FR', ru: 'ru-RU', ar: 'ar-SA',
 };
 
+const CATEGORY_COLORS: Record<string, string> = {
+  Politics: '#FF6B35',
+  Economy: '#00C896',
+  Health: '#FF4D6D',
+  Technology: '#0057FF',
+  Environment: '#3DBF6E',
+  'Defence and Security': '#9747FF',
+  Sports: '#FFB800',
+};
+
+function timeAgo(dateString: string | undefined): string {
+  if (!dateString) return '';
+  const diff = Date.now() - new Date(dateString).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  const days = Math.floor(hrs / 24);
+  if (days < 7) return `${days}d ago`;
+  return new Date(dateString).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
 interface ArticleCardProps {
   article: Article;
   onReadMore: (id: string) => void;
@@ -19,24 +42,9 @@ interface ArticleCardProps {
 
 const ArticleCard: React.FC<ArticleCardProps> = ({ article, onReadMore, language, isPinned = false, onPinToggle }) => {
   const { t, i18n } = useTranslation();
+  const [imgError, setImgError] = useState(false);
   const [showCredibilityTooltip, setShowCredibilityTooltip] = useState(false);
-  const [hovered, setHovered] = useState(false);
   const selectedLanguage: LangCode = (language ?? i18n.language ?? 'en') as LangCode;
-
-  const locale = LOCALE_MAP[selectedLanguage] ?? 'en-US';
-
-  const formatDate = (dateString: string | undefined): string => {
-    if (!dateString) return t('article.date_unknown');
-    const date = new Date(dateString);
-    return date.toLocaleString(locale, {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-    });
-  };
 
   const resolveLangKey = (langs: Article['languages'] | undefined, lang: string) => {
     if (!langs) return undefined;
@@ -45,74 +53,91 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, onReadMore, language
     const altKeys: Record<string, string> = { en: 'english', he: 'hebrew' };
     const altKey = altKeys[lang];
     if (altKey && langs[altKey]) return langs[altKey];
-    // Fallback to English for languages without article content
     return langs['en'] || langs['english'] || undefined;
   };
 
   const credScore = article.credibility_score ?? 0;
   const credTier = credScore >= 7
-    ? { key: 'article.credibility_high', color: '#15803d' }
+    ? { color: '#15803d' }
     : credScore >= 4
-    ? { key: 'article.credibility_moderate', color: '#D4A843' }
-    : { key: 'article.credibility_low', color: '#b91c1c' };
+    ? { color: '#0057FF' }
+    : { color: '#FF3333' };
 
   const langContent = resolveLangKey(article.languages, selectedLanguage);
   const title = langContent?.title || article.title || article.header || t('article.untitled');
   const summary = langContent?.summary || article.summary || article.content || t('article.no_summary');
 
+  const categoryColor = CATEGORY_COLORS[article.category] ?? '#0057FF';
+  const isRTL = selectedLanguage === 'he' || selectedLanguage === 'ar';
+
   return (
     <article
-      className="flex flex-col md:flex-row gap-8 py-10 border-b border-[#EDEAE3] group relative"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      className="flex gap-3 p-3 rounded-xl border border-[#1E1E2A] bg-[#111118] cursor-pointer hover:border-[#2A2A3A] transition-colors relative overflow-hidden"
+      style={article.isUrgent ? { borderLeft: '3px solid #FF3333' } : undefined}
+      onClick={() => onReadMore(article.id)}
+      dir={isRTL ? 'rtl' : 'ltr'}
     >
-      <div className="flex flex-col justify-center" dir={(selectedLanguage === 'he' || selectedLanguage === 'ar') ? 'rtl' : 'ltr'}>
-        <div className="flex items-center gap-4 mb-3 text-[11px] mono font-bold tracking-widest uppercase flex-wrap">
+      {/* Left content */}
+      <div className="flex-1 flex flex-col gap-1.5 min-w-0">
+        {/* Top row: category badge + region */}
+        <div className="flex items-center gap-2 flex-wrap">
           {article.isUrgent ? (
-            <span className="text-[#1E1A14] bg-[#D4A843] px-2 py-0.5 font-black">
+            <span
+              className="category-badge text-white"
+              style={{ backgroundColor: '#FF3333' }}
+            >
               {t('article.breaking')}
             </span>
           ) : (
-            <span className="text-[#D4A843]">{t(`categories.${article.category}`, { defaultValue: article.category })}</span>
+            <span
+              className="category-badge"
+              style={{ backgroundColor: `${categoryColor}22`, color: categoryColor }}
+            >
+              {t(`categories.${article.category}`, { defaultValue: article.category })}
+            </span>
           )}
           {article.region && (
-            <span className="text-[#D4A843]/70 flex items-center gap-1">
+            <span className="text-[10px] text-[#505070] flex items-center gap-0.5">
               <span aria-hidden="true">📍</span> {article.region}
             </span>
           )}
-          <span className="text-[#1E1A14]/50">
-            {formatDate(article.timestamp || article.date)}
-          </span>
         </div>
 
+        {/* Title */}
         <h3
-          className="text-2xl md:text-3xl font-extrabold text-[#1E1A14] mb-4 leading-[1.1] cursor-pointer hover:text-[#D4A843] transition-colors focus:outline-none focus:underline"
-          onClick={() => onReadMore(article.id)}
+          className="text-sm font-bold text-white leading-snug line-clamp-2"
           tabIndex={0}
           onKeyDown={(e) => e.key === 'Enter' && onReadMore(article.id)}
           role="button"
           aria-label={t('article.read_full_aria', { title })}
+          onClick={(e) => { e.stopPropagation(); onReadMore(article.id); }}
         >
           {title}
         </h3>
 
-        <p className="text-[#1E1A14]/70 text-base leading-relaxed mb-6 max-w-2xl font-light">
+        {/* Summary */}
+        <p className="text-[12px] text-[#A8A8C0] leading-relaxed line-clamp-2">
           {summary}
         </p>
 
-        <div className="flex items-center text-[11px] text-[#D4A843] gap-3 mb-4 flex-wrap">
-          <span className="font-bold tracking-widest uppercase">{article.source || t('article.default_source')}</span>
-          <span className="text-[#EDEAE3]" aria-hidden="true">/</span>
-          <div className="relative">
+        {/* Meta row */}
+        <div className="flex items-center gap-2 mt-auto pt-1">
+          <span className="text-[11px] text-[#505070] font-medium truncate">
+            {article.source || t('article.default_source')}
+          </span>
+          <span className="text-[#1E1E2A]" aria-hidden="true">·</span>
+          <span className="text-[11px] text-[#505070] shrink-0">
+            {timeAgo(article.timestamp || article.date)}
+          </span>
+          <span className="text-[#1E1E2A]" aria-hidden="true">·</span>
+          {/* Credibility dots */}
+          <div className="relative flex items-center shrink-0">
             <button
-              onClick={() => setShowCredibilityTooltip(!showCredibilityTooltip)}
+              onClick={(e) => { e.stopPropagation(); setShowCredibilityTooltip(!showCredibilityTooltip); }}
               onMouseEnter={() => setShowCredibilityTooltip(true)}
               onMouseLeave={() => setShowCredibilityTooltip(false)}
-              onFocus={() => setShowCredibilityTooltip(true)}
-              onBlur={() => setShowCredibilityTooltip(false)}
-              className="flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-[#D4A843] rounded-sm"
+              className="flex items-center gap-0.5 focus:outline-none"
               aria-label={t('article.credibility_info_aria')}
-              aria-expanded={showCredibilityTooltip}
             >
               {[0, 1, 2, 3, 4].map(i => {
                 const fill = Math.min(1, Math.max(0, (credScore - i * 2) / 2));
@@ -120,83 +145,82 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, onReadMore, language
                 return (
                   <span
                     key={i}
-                    className="block w-3 h-2"
-                    style={{
-                      background: `linear-gradient(to right, ${credTier.color} ${pct}, ${credTier.color}30 ${pct})`,
-                    }}
+                    className="block w-2.5 h-1.5 rounded-sm"
+                    style={{ background: `linear-gradient(to right, ${credTier.color} ${pct}, ${credTier.color}30 ${pct})` }}
                     aria-hidden="true"
                   />
                 );
               })}
             </button>
-
             {showCredibilityTooltip && (
               <div
                 role="tooltip"
-                className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 w-64 bg-[#1E1A14] border-2 rounded-md p-4 z-50 shadow-lg"
-                style={{ borderColor: credTier.color }}
+                className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-56 bg-[#16161F] border border-[#1E1E2A] rounded-lg p-3 z-50 shadow-xl"
+                onClick={(e) => e.stopPropagation()}
               >
-                <p className="text-[#FAF7F0] text-xs leading-relaxed font-light">
+                <p className="text-white text-[11px] leading-relaxed">
                   {t('article.credibility_tooltip', { score: credScore.toFixed(1) })}
                 </p>
-                <div className="absolute bottom-[-10px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-r-[6px] border-t-[8px] border-l-transparent border-r-transparent" style={{ borderTopColor: credTier.color }} aria-hidden="true"></div>
               </div>
             )}
           </div>
         </div>
-
-        {/* External Sources */}
-        {article.external_sources && (
-          <div className="mt-4 pt-4 border-t border-[#EDEAE3]">
-            <p className="text-[10px] font-bold text-[#D4A843] tracking-widest uppercase mb-2">{t('article.sources')}</p>
-            <div className="flex flex-wrap gap-2">
-              {article.external_sources.length > 0 ? (
-                article.external_sources.map((source, idx) => (
-                  <a
-                    key={idx}
-                    href={source}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[#1E1A14]/60 hover:text-[#D4A843] text-[10px] underline underline-offset-2 transition-colors break-all focus:outline-none focus:ring-1 focus:ring-[#D4A843]"
-                    aria-label={t('article.external_source_aria', { index: idx + 1 })}
-                  >
-                    {source.length > 40 ? source.substring(0, 40) + '…' : source}
-                  </a>
-                ))
-              ) : (
-                <span className="text-[#1E1A14]/40 text-[10px]">{t('article.no_sources')}</span>
-              )}
-            </div>
-          </div>
-        )}
       </div>
 
-      {/* Pin / notification bell — shown on hover or when already pinned */}
-      {onPinToggle && (hovered || isPinned) && (
-        <button
-          onClick={() => onPinToggle(article.id, title)}
-          className={`absolute top-10 right-0 p-1.5 transition-colors focus:outline-none focus:ring-2 focus:ring-[#D4A843] ${
-            isPinned
-              ? 'text-[#D4A843]'
-              : 'text-[#1E1A14]/30 hover:text-[#D4A843]'
-          }`}
-          aria-label={isPinned ? `Unpin article: ${title}` : `Pin article: ${title}`}
-          aria-pressed={isPinned}
-          title={isPinned ? 'Remove notification' : 'Notify me about this'}
-        >
-          {isPinned ? (
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-            </svg>
+      {/* Right side: thumbnail + pin */}
+      <div className="flex flex-col items-center gap-2 shrink-0" style={{ width: 90 }}>
+        {/* Thumbnail */}
+        <div className="w-full rounded-lg overflow-hidden" style={{ height: 72 }}>
+          {article.imageUrl && !imgError ? (
+            <img
+              src={article.imageUrl}
+              alt=""
+              aria-hidden="true"
+              className="w-full h-full object-cover"
+              onError={() => setImgError(true)}
+            />
           ) : (
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-            </svg>
+            <div
+              className="w-full h-full flex items-center justify-center"
+              style={{ backgroundColor: `${categoryColor}22` }}
+            >
+              <span style={{ color: categoryColor, fontSize: 22 }} aria-hidden="true">
+                {article.category === 'Politics' ? '🏛' :
+                 article.category === 'Economy' ? '📈' :
+                 article.category === 'Health' ? '🏥' :
+                 article.category === 'Technology' ? '💻' :
+                 article.category === 'Environment' ? '🌿' :
+                 article.category === 'Defence and Security' ? '🛡' :
+                 article.category === 'Sports' ? '⚽' : '📰'}
+              </span>
+            </div>
           )}
-        </button>
-      )}
+        </div>
+
+        {/* Pin button */}
+        {onPinToggle && (
+          <button
+            onClick={(e) => { e.stopPropagation(); onPinToggle(article.id, title); }}
+            className={`p-1 transition-colors focus:outline-none rounded ${
+              isPinned ? 'text-[#0057FF]' : 'text-[#505070] hover:text-[#A8A8C0]'
+            }`}
+            aria-label={isPinned ? `Unpin article: ${title}` : `Pin article: ${title}`}
+            aria-pressed={isPinned}
+          >
+            {isPinned ? (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+              </svg>
+            ) : (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+              </svg>
+            )}
+          </button>
+        )}
+      </div>
     </article>
   );
 };

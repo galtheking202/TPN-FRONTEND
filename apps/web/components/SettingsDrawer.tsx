@@ -58,38 +58,38 @@ const LanguageDrum: React.FC<{ value: LanguageCode; onChange: (l: LanguageCode) 
     <div className="flex flex-col items-center select-none w-full" dir="ltr">
       <button
         onClick={() => spin(-1)}
-        className="w-full flex justify-center py-2 text-[#D4A843]/50 hover:text-[#D4A843] transition-colors focus:outline-none"
+        className="w-full flex justify-center py-2 text-[#505070] hover:text-[#0057FF] transition-colors focus:outline-none"
         aria-label="Previous language"
       >
         <svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor" aria-hidden="true"><path d="M5 0L0 6h10z"/></svg>
       </button>
 
       <div
-        className="relative overflow-hidden border border-[#EDEAE3] w-full"
+        className="relative overflow-hidden border border-[#1E1E2A] w-full rounded-lg"
         style={{ height: DRUM_ITEM_H * 3 }}
         aria-live="polite"
         aria-atomic="true"
       >
         <div
-          className="absolute inset-x-0 pointer-events-none z-10 border-t border-b border-[#D4A843]/50"
+          className="absolute inset-x-0 pointer-events-none z-10 border-t border-b border-[#0057FF]/40"
           style={{ top: DRUM_ITEM_H, height: DRUM_ITEM_H }}
         />
         <div
           className="absolute inset-x-0 top-0 pointer-events-none z-10"
-          style={{ height: DRUM_ITEM_H * 0.75, background: 'linear-gradient(to bottom, var(--bg, #FAF7F0) 20%, transparent)' }}
+          style={{ height: DRUM_ITEM_H * 0.75, background: 'linear-gradient(to bottom, #111118 20%, transparent)' }}
         />
         <div
           className="absolute inset-x-0 bottom-0 pointer-events-none z-10"
-          style={{ height: DRUM_ITEM_H * 0.75, background: 'linear-gradient(to top, var(--bg, #FAF7F0) 20%, transparent)' }}
+          style={{ height: DRUM_ITEM_H * 0.75, background: 'linear-gradient(to top, #111118 20%, transparent)' }}
         />
         <div ref={stripRef} style={{ transform: `translateY(${-DRUM_ITEM_H}px)` }}>
           {items5.map((item, i) => (
             <div
               key={item.code + '-' + i}
               style={{ height: DRUM_ITEM_H }}
-              className={`flex items-center justify-between px-4 ${i === 2 ? 'text-[#1E1A14]' : 'text-[#1E1A14]/20'}`}
+              className={`flex items-center justify-between px-4 ${i === 2 ? 'text-white' : 'text-[#505070]'}`}
             >
-              <span className={`text-[11px] tracking-widest uppercase ${i === 2 ? 'font-black text-[#D4A843]' : 'font-bold'}`}>
+              <span className={`text-[11px] tracking-widest uppercase ${i === 2 ? 'font-black text-[#0057FF]' : 'font-bold'}`}>
                 {item.label}
               </span>
               <span className={`text-[10px] ${i === 2 ? 'font-medium' : 'font-normal'}`}>
@@ -102,7 +102,7 @@ const LanguageDrum: React.FC<{ value: LanguageCode; onChange: (l: LanguageCode) 
 
       <button
         onClick={() => spin(1)}
-        className="w-full flex justify-center py-2 text-[#D4A843]/50 hover:text-[#D4A843] transition-colors focus:outline-none"
+        className="w-full flex justify-center py-2 text-[#505070] hover:text-[#0057FF] transition-colors focus:outline-none"
         aria-label="Next language"
       >
         <svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor" aria-hidden="true"><path d="M5 6L0 0h10z"/></svg>
@@ -116,17 +116,17 @@ const LanguageDrum: React.FC<{ value: LanguageCode; onChange: (l: LanguageCode) 
 const ToggleRow: React.FC<{ label: string; active: boolean; onChange: () => void; description?: string }> = ({
   label, active, onChange, description,
 }) => (
-  <div className="flex items-center justify-between py-3 border-b border-[#EDEAE3]/60 last:border-0">
+  <div className="flex items-center justify-between py-3 border-b border-[#1E1E2A]/60 last:border-0">
     <div>
-      <div className="text-[11px] font-bold tracking-widest uppercase text-[#1E1A14]/70">{label}</div>
-      {description && <div className="text-[10px] text-[#1E1A14]/40 mt-0.5">{description}</div>}
+      <div className="text-[11px] font-bold tracking-widest uppercase text-[#A8A8C0]">{label}</div>
+      {description && <div className="text-[10px] text-[#505070] mt-0.5">{description}</div>}
     </div>
     <button
       onClick={onChange}
       aria-pressed={active}
-      className={`relative w-9 h-5 transition-colors focus:outline-none focus:ring-2 focus:ring-[#D4A843] focus:ring-offset-1 shrink-0 ${active ? 'bg-[#D4A843]' : 'bg-[#EDEAE3]'}`}
+      className={`relative w-9 h-5 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[#0057FF] focus:ring-offset-1 focus:ring-offset-[#111118] shrink-0 ${active ? 'bg-[#0057FF]' : 'bg-[#1E1E2A]'}`}
     >
-      <span className={`absolute top-0.5 w-4 h-4 bg-[#FAF7F0] shadow-sm transition-transform ${active ? 'translate-x-[18px]' : 'translate-x-0.5'}`} />
+      <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform ${active ? 'translate-x-[18px]' : 'translate-x-0.5'}`} />
     </button>
   </div>
 );
@@ -135,9 +135,9 @@ const ToggleRow: React.FC<{ label: string; active: boolean; onChange: () => void
 
 const SectionHeader: React.FC<{ label: string; badge?: number }> = ({ label, badge }) => (
   <div className="flex items-center gap-2 mb-3 pt-1">
-    <div className="text-[10px] font-black tracking-widest uppercase text-[#D4A843]">{label}</div>
+    <div className="text-[10px] font-black tracking-widest uppercase text-[#0057FF]">{label}</div>
     {badge != null && badge > 0 && (
-      <span className="bg-[#D4A843] text-[#1E1A14] text-[9px] font-black px-1.5 py-0.5 leading-none">{badge}</span>
+      <span className="bg-[#0057FF] text-white text-[9px] font-black px-1.5 py-0.5 leading-none rounded-full">{badge}</span>
     )}
   </div>
 );
@@ -147,9 +147,6 @@ const SectionHeader: React.FC<{ label: string; badge?: number }> = ({ label, bad
 const NOTIF_CATEGORIES = ['Politics', 'Economy', 'Health', 'Technology', 'Environment', 'Defence and Security', 'Sports'];
 
 interface SettingsDrawerProps {
-  // Appearance
-  isDark: boolean;
-  onToggleDark: () => void;
   // Language
   language: LanguageCode;
   onLanguageChange: (l: LanguageCode) => void;
@@ -172,7 +169,6 @@ interface SettingsDrawerProps {
 }
 
 const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
-  isDark, onToggleDark,
   language, onLanguageChange,
   savedFilters, onToggleFilter, onDeleteFilter, onOpenFilterBuilder,
   notifPrefs, regions, onToggleCategory, onToggleRegion, onUnpinArticle,
@@ -187,23 +183,23 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 z-40 bg-[#1E1A14]/20 backdrop-blur-[2px]"
+        className="fixed inset-0 z-40 bg-black/60 backdrop-blur-[2px]"
         onClick={onClose}
         aria-hidden="true"
       />
 
       {/* Drawer */}
       <div
-        className="fixed top-0 right-0 h-full w-80 z-50 bg-[#FAF7F0] border-l border-[#EDEAE3] flex flex-col"
+        className="fixed top-0 right-0 h-full w-80 z-50 bg-[#111118] border-l border-[#1E1E2A] flex flex-col"
         role="dialog"
         aria-label="Settings"
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-[#EDEAE3] shrink-0">
-          <div className="text-[11px] font-black tracking-widest uppercase text-[#1E1A14]">Settings</div>
+        <div className="flex items-center justify-between px-6 py-5 border-b border-[#1E1E2A] shrink-0">
+          <div className="text-[11px] font-black tracking-widest uppercase text-white">Settings</div>
           <button
             onClick={onClose}
-            className="text-[#1E1A14]/40 hover:text-[#1E1A14] transition-colors w-8 h-8 flex items-center justify-center"
+            className="text-[#505070] hover:text-white transition-colors w-8 h-8 flex items-center justify-center"
             aria-label="Close settings"
           >
             ✕
@@ -212,17 +208,6 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
 
         {/* Scrollable body */}
         <div className="flex-1 overflow-y-auto px-6 py-5 space-y-8">
-
-          {/* ── Appearance ── */}
-          <section>
-            <SectionHeader label="Appearance" />
-            <ToggleRow
-              label="Dark Mode"
-              description={isDark ? 'Dark theme active' : 'Light theme active'}
-              active={isDark}
-              onChange={onToggleDark}
-            />
-          </section>
 
           {/* ── Language ── */}
           <section>
@@ -239,15 +224,15 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
                 {savedFilters.map(filter => (
                   <div
                     key={filter.id}
-                    className="flex items-center gap-2 py-3 border-b border-[#EDEAE3]/60 last:border-0"
+                    className="flex items-center gap-2 py-3 border-b border-[#1E1E2A]/60 last:border-0"
                   >
                     {/* Name + meta — click to edit */}
                     <button
                       onClick={() => { onOpenFilterBuilder(filter); onClose(); }}
                       className="flex-1 text-left min-w-0 focus:outline-none"
                     >
-                      <div className="text-[11px] font-bold text-[#1E1A14]/70 truncate">{filter.name}</div>
-                      <div className="text-[9px] text-[#1E1A14]/40 mt-0.5">
+                      <div className="text-[11px] font-bold text-[#A8A8C0] truncate">{filter.name}</div>
+                      <div className="text-[9px] text-[#505070] mt-0.5">
                         {[
                           filter.categories.length > 0
                             ? `${filter.categories.length} categor${filter.categories.length === 1 ? 'y' : 'ies'}`
@@ -262,7 +247,7 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
                     {/* Delete */}
                     <button
                       onClick={() => onDeleteFilter(filter.id)}
-                      className="text-[#1E1A14]/20 hover:text-[#1E1A14]/50 transition-colors shrink-0 p-1 focus:outline-none"
+                      className="text-[#505070] hover:text-[#A8A8C0] transition-colors shrink-0 p-1 focus:outline-none"
                       aria-label={`Delete filter: ${filter.name}`}
                     >
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
@@ -274,22 +259,22 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
                     <button
                       onClick={() => onToggleFilter(filter.id)}
                       aria-pressed={filter.enabled}
-                      className={`relative w-9 h-5 transition-colors shrink-0 focus:outline-none focus:ring-2 focus:ring-[#D4A843] ${filter.enabled ? 'bg-[#D4A843]' : 'bg-[#EDEAE3]'}`}
+                      className={`relative w-9 h-5 rounded-full transition-colors shrink-0 focus:outline-none focus:ring-2 focus:ring-[#0057FF] ${filter.enabled ? 'bg-[#0057FF]' : 'bg-[#1E1E2A]'}`}
                     >
-                      <span className={`absolute top-0.5 w-4 h-4 bg-[#FAF7F0] shadow-sm transition-transform ${filter.enabled ? 'translate-x-[18px]' : 'translate-x-0.5'}`} />
+                      <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform ${filter.enabled ? 'translate-x-[18px]' : 'translate-x-0.5'}`} />
                     </button>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="py-5 text-center border border-dashed border-[#EDEAE3]">
-                <p className="text-[10px] font-bold tracking-widest uppercase text-[#1E1A14]/30">No filters yet</p>
+              <div className="py-5 text-center border border-dashed border-[#1E1E2A] rounded-lg">
+                <p className="text-[10px] font-bold tracking-widest uppercase text-[#505070]">No filters yet</p>
               </div>
             )}
 
             <button
               onClick={() => { onOpenFilterBuilder(); onClose(); }}
-              className="w-full mt-3 py-2.5 border border-[#D4A843] text-[10px] font-black tracking-widest uppercase text-[#D4A843] hover:bg-[#D4A843] hover:text-[#1E1A14] transition-colors focus:outline-none"
+              className="w-full mt-3 py-2.5 border border-[#0057FF] text-[10px] font-black tracking-widest uppercase text-[#0057FF] hover:bg-[#0057FF] hover:text-white transition-colors focus:outline-none rounded-lg"
             >
               + New Filter
             </button>
@@ -301,7 +286,7 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
 
             {/* By Category */}
             <div className="mb-5">
-              <div className="text-[9px] font-bold tracking-widest uppercase text-[#1E1A14]/40 mb-2">By Category</div>
+              <div className="text-[9px] font-bold tracking-widest uppercase text-[#505070] mb-2">By Category</div>
               {NOTIF_CATEGORIES.map(cat => (
                 <ToggleRow
                   key={cat}
@@ -315,7 +300,7 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
             {/* By Region */}
             {filteredRegions.length > 0 && (
               <div className="mb-5">
-                <div className="text-[9px] font-bold tracking-widest uppercase text-[#1E1A14]/40 mb-2">By Region</div>
+                <div className="text-[9px] font-bold tracking-widest uppercase text-[#505070] mb-2">By Region</div>
                 {filteredRegions.map(region => (
                   <ToggleRow
                     key={region}
@@ -330,20 +315,20 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
             {/* Pinned Articles */}
             {notifPrefs.pinnedArticles.length > 0 && (
               <div>
-                <div className="text-[9px] font-bold tracking-widest uppercase text-[#1E1A14]/40 mb-2">
+                <div className="text-[9px] font-bold tracking-widest uppercase text-[#505070] mb-2">
                   Pinned Articles ({notifPrefs.pinnedArticles.length})
                 </div>
                 {notifPrefs.pinnedArticles.map(article => (
                   <div
                     key={article.id}
-                    className="flex items-start justify-between py-2.5 border-b border-[#EDEAE3]/60 gap-3 last:border-0"
+                    className="flex items-start justify-between py-2.5 border-b border-[#1E1E2A]/60 gap-3 last:border-0"
                   >
-                    <span className="text-[11px] text-[#1E1A14]/70 leading-relaxed line-clamp-2 flex-1">
+                    <span className="text-[11px] text-[#A8A8C0] leading-relaxed line-clamp-2 flex-1">
                       {article.title}
                     </span>
                     <button
                       onClick={() => onUnpinArticle(article.id)}
-                      className="text-[#1E1A14]/30 hover:text-[#1E1A14]/60 transition-colors shrink-0 mt-0.5"
+                      className="text-[#505070] hover:text-[#A8A8C0] transition-colors shrink-0 mt-0.5"
                       aria-label={`Unpin: ${article.title}`}
                     >
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -358,7 +343,7 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
             )}
 
             {notifCount === 0 && (
-              <div className="text-center py-6 text-[#1E1A14]/30">
+              <div className="text-center py-6 text-[#505070]">
                 <div className="text-2xl mb-2">🔔</div>
                 <p className="text-[10px] font-bold tracking-widest uppercase">No subscriptions yet</p>
               </div>
@@ -368,13 +353,13 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({
 
         {/* Footer — sign-in nudge */}
         {!isLoggedIn && (
-          <div className="px-6 py-4 border-t border-[#EDEAE3] bg-[#EDEAE3]/30 shrink-0">
-            <p className="text-[10px] text-[#1E1A14]/50 font-bold tracking-wide leading-relaxed mb-2">
+          <div className="px-6 py-4 border-t border-[#1E1E2A] bg-[#16161F] shrink-0">
+            <p className="text-[10px] text-[#505070] font-bold tracking-wide leading-relaxed mb-2">
               ⚠ Preferences saved locally. Sign in to sync across devices.
             </p>
             <button
               onClick={onSignInPrompt}
-              className="text-[10px] text-[#D4A843] font-black tracking-widest uppercase hover:underline"
+              className="text-[10px] text-[#0057FF] font-black tracking-widest uppercase hover:underline"
             >
               Sign In →
             </button>

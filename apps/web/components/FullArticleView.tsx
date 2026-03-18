@@ -9,27 +9,21 @@ const LOCALE_MAP: Record<LangCode, string> = {
   en: 'en-US', he: 'he-IL', fr: 'fr-FR', ru: 'ru-RU', ar: 'ar-SA',
 };
 
+const CATEGORY_COLORS: Record<string, string> = {
+  Politics: '#FF6B35',
+  Economy: '#00C896',
+  Health: '#FF4D6D',
+  Technology: '#0057FF',
+  Environment: '#3DBF6E',
+  'Defence and Security': '#9747FF',
+  Sports: '#FFB800',
+};
+
 interface FullArticleViewProps {
   article: Article;
   onClose: () => void;
   language?: LangCode;
 }
-
-const HEADING_FONT: Record<LangCode, string> = {
-  en: "'Playfair Display', serif",
-  fr: "'Playfair Display', serif",
-  ru: "'Playfair Display', serif",
-  he: "'Frank Ruhl Libre', serif",
-  ar: "'Amiri', serif",
-};
-
-const BODY_FONT: Record<LangCode, string> = {
-  en: "'Lora', serif",
-  fr: "'Lora', serif",
-  ru: "'Lora', serif",
-  he: "'Frank Ruhl Libre', serif",
-  ar: "'Amiri', serif",
-};
 
 const FullArticleView: React.FC<FullArticleViewProps> = ({ article, onClose, language }) => {
   const { t, i18n } = useTranslation();
@@ -85,20 +79,22 @@ const FullArticleView: React.FC<FullArticleViewProps> = ({ article, onClose, lan
 
   const credScore = article.credibility_score ?? 0;
   const credTier = credScore >= 7
-    ? { key: 'article.credibility_high', color: '#15803d' }
+    ? { color: '#15803d' }
     : credScore >= 4
-    ? { key: 'article.credibility_moderate', color: '#D4A843' }
-    : { key: 'article.credibility_low', color: '#b91c1c' };
+    ? { color: '#0057FF' }
+    : { color: '#FF3333' };
 
   const langContent = resolveLangKey(article.languages, selectedLanguage);
   const title = langContent?.title || article.title || article.header || t('article.untitled');
   const summary = langContent?.summary || article.summary || article.content || t('article.no_summary');
   const body = langContent?.body || article.content || '';
 
+  const categoryColor = CATEGORY_COLORS[article.category] ?? '#0057FF';
+
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-50 bg-[#FAF7F0] flex flex-col overflow-y-auto"
+      className="fixed inset-0 z-50 bg-[#0A0A0F] flex flex-col overflow-y-auto"
       dir={isRTL ? 'rtl' : 'ltr'}
       role="dialog"
       aria-modal="true"
@@ -106,53 +102,77 @@ const FullArticleView: React.FC<FullArticleViewProps> = ({ article, onClose, lan
     >
       {/* Reading progress bar */}
       <div
-        className="fixed top-0 left-0 h-[3px] bg-[#D4A843] z-50 transition-[width] duration-75 pointer-events-none"
+        className="fixed top-0 left-0 h-[3px] bg-[#0057FF] z-50 transition-[width] duration-75 pointer-events-none"
         style={{ width: `${readProgress}%` }}
         aria-hidden="true"
       />
+
       {/* Navigation bar */}
-      <nav className="sticky top-0 bg-[#FAF7F0]/95 backdrop-blur-md border-b border-[#EDEAE3] px-6 py-4 flex justify-between items-center z-10">
+      <nav className="sticky top-0 bg-[#111118]/95 backdrop-blur-md border-b border-[#1E1E2A] px-6 py-4 flex justify-between items-center z-10">
         <button
           onClick={onClose}
-          className="flex items-center gap-2 text-[#D4A843] font-bold text-xs uppercase tracking-widest hover:text-[#1E1A14] transition-colors focus:outline-none focus:ring-2 focus:ring-[#D4A843] px-1"
+          className="flex items-center gap-2 text-[#A8A8C0] font-bold text-xs uppercase tracking-widest hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#0057FF] px-1"
           aria-label={t('article.back_aria')}
         >
           <span className="text-xl" aria-hidden="true">←</span> {t('article.back')}
         </button>
-        <div className="text-[10px] mono text-[#1E1A14]/50 font-bold uppercase tracking-widest">
+        <div className="text-[10px] mono font-bold uppercase tracking-widest">
           {article.isUrgent ? (
-            <span className="text-[#1E1A14] bg-[#D4A843] px-2 py-0.5 font-black">{t('article.breaking')}</span>
+            <span className="category-badge text-white" style={{ backgroundColor: '#FF3333' }}>
+              {t('article.breaking')}
+            </span>
           ) : (
-            <span>{t(`categories.${article.category}`, { defaultValue: article.category })}</span>
+            <span
+              className="category-badge"
+              style={{ backgroundColor: `${categoryColor}22`, color: categoryColor }}
+            >
+              {t(`categories.${article.category}`, { defaultValue: article.category })}
+            </span>
           )}
         </div>
       </nav>
 
-      <article className="max-w-4xl mx-auto px-6 py-12 md:py-20 w-full">
-        <div className="flex flex-col gap-10">
+      {/* Hero image */}
+      {article.imageUrl && (
+        <div className="relative w-full overflow-hidden" style={{ height: 240 }}>
+          <img
+            src={article.imageUrl}
+            alt=""
+            aria-hidden="true"
+            className="w-full h-full object-cover"
+          />
+          <div
+            className="absolute inset-0"
+            style={{ background: 'linear-gradient(to bottom, transparent 40%, #0A0A0F 100%)' }}
+          />
+        </div>
+      )}
+
+      <article className="max-w-3xl mx-auto px-6 py-10 w-full">
+        <div className="flex flex-col gap-8">
           {/* Metadata */}
           <div>
             {article.region && (
-              <div className="text-[#D4A843] text-xs font-bold tracking-widest mb-2 flex items-center gap-1">
+              <div className="text-[#0057FF] text-xs font-bold tracking-widest mb-3 flex items-center gap-1">
                 <span aria-hidden="true">📍</span> {article.region}
               </div>
             )}
-            <h1 className={`text-4xl md:text-6xl font-black text-[#1E1A14] leading-[1.1] mb-6 tracking-tight${selectedLanguage !== 'he' ? ' italic' : ''}`} style={{ fontFamily: HEADING_FONT[selectedLanguage] }}>
+            <h1 className="text-3xl md:text-5xl font-black text-white leading-[1.1] mb-6 tracking-tight">
               {title}
             </h1>
-            <div className="border-t border-b border-[#1E1A14]/15 py-4 flex items-center gap-4 flex-wrap">
-              <span className="text-sm font-bold text-[#1E1A14]" style={{ fontFamily: BODY_FONT[selectedLanguage] }}>
+            <div className="border-t border-b border-[#1E1E2A] py-4 flex items-center gap-4 flex-wrap">
+              <span className="text-sm font-bold text-[#A8A8C0]">
                 {t('article.by')} {article.author || article.source || t('article.default_source')}
               </span>
-              <span className="text-[#EDEAE3]" aria-hidden="true">|</span>
-              <span className="mono text-xs text-[#1E1A14]/50 font-bold uppercase tracking-widest">
+              <span className="text-[#1E1E2A]" aria-hidden="true">|</span>
+              <span className="mono text-xs text-[#505070] font-bold uppercase tracking-widest">
                 {formatDate(article.timestamp || article.date)}
               </span>
               {article.credibility_score !== undefined && (
                 <>
-                  <span className="text-[#EDEAE3]" aria-hidden="true">|</span>
+                  <span className="text-[#1E1E2A]" aria-hidden="true">|</span>
                   <span
-                    className="flex items-center gap-1"
+                    className="flex items-center gap-0.5"
                     title={t('article.credibility_tooltip', { score: credScore.toFixed(1) })}
                     aria-label={`${t('article.credibility_info_aria')} ${credScore.toFixed(1)}/10`}
                   >
@@ -162,10 +182,8 @@ const FullArticleView: React.FC<FullArticleViewProps> = ({ article, onClose, lan
                       return (
                         <span
                           key={i}
-                          className="block w-3 h-2"
-                          style={{
-                            background: `linear-gradient(to right, ${credTier.color} ${pct}, ${credTier.color}30 ${pct})`,
-                          }}
+                          className="block w-2.5 h-1.5 rounded-sm"
+                          style={{ background: `linear-gradient(to right, ${credTier.color} ${pct}, ${credTier.color}30 ${pct})` }}
                           aria-hidden="true"
                         />
                       );
@@ -177,37 +195,49 @@ const FullArticleView: React.FC<FullArticleViewProps> = ({ article, onClose, lan
           </div>
 
           {/* Body */}
-          <div className="space-y-8">
-            <p className="text-2xl md:text-3xl text-[#1E1A14] leading-relaxed font-light italic border-l-4 border-[#D4A843] pl-8 py-2">
+          <div className="space-y-6">
+            <p
+              className="text-lg md:text-xl text-[#A8A8C0] leading-relaxed italic border-l-4 pl-6 py-1"
+              style={{ borderColor: '#0057FF' }}
+            >
               {summary}
             </p>
 
-            <div className="article-body text-[#1E1A14]/80 text-lg leading-[1.85] space-y-6 max-w-[68ch]" style={{ fontFamily: BODY_FONT[selectedLanguage] }}>
+            <div className="article-body space-y-5" style={{ color: '#D0D0E8', fontSize: 15, lineHeight: '26px' }}>
               {body ? (() => {
                 const paragraphs = body.split('\n').filter(p => p.trim());
                 return paragraphs.map((paragraph, index) => (
-                  <React.Fragment key={index}>
-                    {index > 0 && index % 5 === 0 && (
-                      <div className="article-section-break" aria-hidden="true">• • •</div>
-                    )}
-                    <p>{paragraph}</p>
-                  </React.Fragment>
+                  <p key={index}>{paragraph}</p>
                 ));
               })() : (
-                <p className="text-[#1E1A14]/40 italic">{t('article.no_content')}</p>
+                <p className="italic" style={{ color: '#505070' }}>{t('article.no_content')}</p>
               )}
             </div>
           </div>
 
-          {/* Footer */}
-          <div className="pt-12 border-t border-[#EDEAE3] flex justify-center">
-            <button
-              onClick={onClose}
-              className="px-12 py-4 bg-[#D4A843] text-[#1E1A14] font-black uppercase tracking-widest hover:bg-[#1E1A14] hover:text-[#FAF7F0] transition-all transform hover:-translate-y-1 active:translate-y-0 shadow-lg focus:outline-none focus:ring-2 focus:ring-[#1E1A14]"
-            >
-              {t('article.back')}
-            </button>
-          </div>
+          {/* Sources */}
+          {article.external_sources && article.external_sources.length > 0 && (
+            <div className="pt-6 border-t border-[#1E1E2A]">
+              <div className="bg-[#111118] rounded-xl p-4 border border-[#1E1E2A]">
+                <p className="text-[10px] font-bold text-[#0057FF] tracking-widest uppercase mb-3">{t('article.sources')}</p>
+                <div className="flex flex-wrap gap-2">
+                  {article.external_sources.map((source, idx) => (
+                    <a
+                      key={idx}
+                      href={source}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#A8A8C0] hover:text-white text-[10px] underline underline-offset-2 transition-colors break-all focus:outline-none focus:ring-1 focus:ring-[#0057FF]"
+                      aria-label={t('article.external_source_aria', { index: idx + 1 })}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {source.length > 50 ? source.substring(0, 50) + '…' : source}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </article>
     </div>
