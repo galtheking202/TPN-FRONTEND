@@ -1,1 +1,1 @@
-export { default } from '@tpn/shared/src/i18n';
+export { default } from '@tpn/shared/i18n';

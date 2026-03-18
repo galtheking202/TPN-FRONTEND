@@ -1,1 +1,1 @@
-export * from '@tpn/shared/src/types';
+export * from '@tpn/shared/types';

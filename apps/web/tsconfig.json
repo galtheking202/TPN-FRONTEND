@@ -23,7 +23,7 @@
         "./*"
       ],
       "@tpn/shared": ["../../packages/shared/src/index.ts"],
-      "@tpn/shared/*": ["../../packages/shared/*"]
+      "@tpn/shared/*": ["../../packages/shared/src/*"]
     },
     "allowImportingTsExtensions": true,
     "noEmit": true
