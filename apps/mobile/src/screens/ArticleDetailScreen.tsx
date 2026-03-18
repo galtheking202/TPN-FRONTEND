@@ -110,7 +110,7 @@ export default function ArticleDetailScreen({ navigation, route }: Props) {
         onContentSizeChange={(_, h) => { contentHeight.current = h; }}
       >
         {/* Category + Credibility + Region */}
-        <View style={styles.topRow}>
+        <View style={[styles.topRow, { flexDirection: isRTL ? 'row-reverse' : 'row' }]}>
           <View style={[styles.categoryChip, { backgroundColor: catColor + '22', borderColor: catColor }]}>
             <Text style={[styles.categoryChipText, { color: catColor }]}>{article.category.toUpperCase()}</Text>
           </View>
@@ -124,10 +124,10 @@ export default function ArticleDetailScreen({ navigation, route }: Props) {
         </View>
 
         {/* Title */}
-        <Text style={styles.title}>{title}</Text>
+        <Text style={[styles.title, { textAlign: isRTL ? 'right' : 'left' }]}>{title}</Text>
 
         {/* Meta */}
-        <View style={styles.metaRow}>
+        <View style={[styles.metaRow, { flexDirection: isRTL ? 'row-reverse' : 'row' }]}>
           {article.author && <Text style={styles.metaText}><Text style={styles.metaLabel}>{t('article.by')} </Text>{article.author}</Text>}
           {article.source && <><Text style={styles.metaSep}>·</Text><Text style={styles.metaText}>{article.source}</Text></>}
           {(article.date ?? article.timestamp) && <><Text style={styles.metaSep}>·</Text><Text style={styles.metaText}>{formatDate(article.date ?? article.timestamp)}</Text></>}
@@ -136,10 +136,10 @@ export default function ArticleDetailScreen({ navigation, route }: Props) {
         <View style={styles.divider} />
 
         {/* Summary */}
-        {summary && <><Text style={styles.summary}>{summary}</Text><View style={styles.divider} /></>}
+        {summary && <><Text style={[styles.summary, { textAlign: isRTL ? 'right' : 'left' }]}>{summary}</Text><View style={styles.divider} /></>}
 
         {/* Body */}
-        <Text style={styles.body}>{body}</Text>
+        <Text style={[styles.body, { textAlign: isRTL ? 'right' : 'left' }]}>{body}</Text>
 
         {/* Sources */}
         {sources.length > 0 && (

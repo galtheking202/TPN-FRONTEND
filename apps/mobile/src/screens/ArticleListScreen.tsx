@@ -255,15 +255,15 @@ function ArticleCard({ article, title, summary, pinned, onPress, onPin }: { arti
     <Pressable style={[styles.card, article.isUrgent && styles.cardUrgent]} onPress={onPress}>
       {article.isUrgent && <View style={styles.urgentStrip} />}
       <View style={[styles.cardBody, { direction: isRTL ? 'rtl' : 'ltr' }]}>
-        <View style={styles.cardTopRow}>
+        <View style={[styles.cardTopRow, { flexDirection: isRTL ? 'row-reverse' : 'row' }]}>
           <View style={[styles.categoryBadge, { backgroundColor: catColor + '22', borderColor: catColor }]}>
             <Text style={[styles.categoryBadgeText, { color: catColor }]}>{article.category.toUpperCase()}</Text>
           </View>
           {article.region && <Text style={styles.regionTag}>📍 {article.region}</Text>}
         </View>
-        <Text style={styles.cardTitle} numberOfLines={2}>{title}</Text>
-        <Text style={styles.cardSummary} numberOfLines={2}>{summary}</Text>
-        <View style={styles.cardMeta}>
+        <Text style={[styles.cardTitle, { textAlign: isRTL ? 'right' : 'left' }]} numberOfLines={2}>{title}</Text>
+        <Text style={[styles.cardSummary, { textAlign: isRTL ? 'right' : 'left' }]} numberOfLines={2}>{summary}</Text>
+        <View style={[styles.cardMeta, { flexDirection: isRTL ? 'row-reverse' : 'row' }]}>
           <Text style={styles.metaSource}>{article.source}</Text>
           <Text style={styles.metaDot}>·</Text>
           <Text style={styles.metaTime}>{timeAgo(article.timestamp ?? article.date)}</Text>
