@@ -8,7 +8,6 @@ ENV VITE_API_URL=$VITE_API_URL
 
 # Copy workspace manifests
 COPY package.json package-lock.json ./
-COPY tsconfig.json ./
 
 # Copy shared package
 COPY packages/shared ./packages/shared
