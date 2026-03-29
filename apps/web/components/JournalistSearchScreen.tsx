@@ -24,6 +24,7 @@ interface IngestReport {
   category: string;
   report: string;
   timestamp: string;
+  lastUpdated: string;
   keywords: string[];
   credibility: number;
   isUrgent: boolean;
@@ -39,6 +40,7 @@ const MOCK_REPORTS: IngestReport[] = [
     report:
       'Senior officials from three NATO member states convened an unscheduled emergency session in Brussels on Tuesday evening. Sources indicate the session lasted over six hours and centered on military posture adjustments in the eastern flank. No official statement has been released.',
     timestamp: '2026-03-29T07:14:00Z',
+    lastUpdated: '2026-03-29T09:02:00Z',
     keywords: ['NATO', 'Brussels', 'military', 'eastern flank'],
     credibility: 8,
     isUrgent: true,
@@ -52,6 +54,7 @@ const MOCK_REPORTS: IngestReport[] = [
     report:
       'Internal memo from a major European investment bank suggests exposure to sovereign debt in three emerging markets exceeds regulatory thresholds. The memo, dated March 25, references stress-test scenarios not yet disclosed to regulators.',
     timestamp: '2026-03-29T05:48:00Z',
+    lastUpdated: '2026-03-29T06:30:00Z',
     keywords: ['bank', 'sovereign debt', 'regulatory', 'exposure'],
     credibility: 6,
     isUrgent: false,
@@ -65,6 +68,7 @@ const MOCK_REPORTS: IngestReport[] = [
     report:
       'A previously undocumented threat actor designated TA-2291 has been observed deploying a new loader variant targeting critical infrastructure operators in the Gulf region. The loader uses certificate pinning to evade common sandbox detection.',
     timestamp: '2026-03-28T22:31:00Z',
+    lastUpdated: '2026-03-29T01:15:00Z',
     keywords: ['threat actor', 'loader', 'critical infrastructure', 'Gulf', 'sandbox'],
     credibility: 9,
     isUrgent: true,
@@ -78,6 +82,7 @@ const MOCK_REPORTS: IngestReport[] = [
     report:
       'Satellite imagery analysis from a third-party firm indicates increased logistics activity at a military depot 80 km north of the border. The activity pattern is consistent with pre-positioning of armored units. Assessment confidence: moderate.',
     timestamp: '2026-03-28T18:05:00Z',
+    lastUpdated: '2026-03-28T20:40:00Z',
     keywords: ['satellite', 'military depot', 'armored', 'logistics', 'border'],
     credibility: 7,
     isUrgent: false,
@@ -91,6 +96,7 @@ const MOCK_REPORTS: IngestReport[] = [
     report:
       'The foreign ministry of Country X denied reports of back-channel negotiations with a regional rival, calling the claims "categorically false." Three diplomatic sources speaking anonymously confirmed talks are ongoing through a third-party mediator.',
     timestamp: '2026-03-28T14:22:00Z',
+    lastUpdated: '2026-03-28T16:55:00Z',
     keywords: ['diplomacy', 'negotiations', 'foreign ministry', 'back-channel'],
     credibility: 8,
     isUrgent: false,
@@ -104,6 +110,7 @@ const MOCK_REPORTS: IngestReport[] = [
     report:
       'Chatter on a monitored dark web forum references a planned coordinated operation targeting financial messaging infrastructure. Specifics remain vague but multiple independent handles have corroborated the timeline as "within 30 days."',
     timestamp: '2026-03-28T09:50:00Z',
+    lastUpdated: '2026-03-28T13:22:00Z',
     keywords: ['dark web', 'financial', 'messaging infrastructure', 'coordinated'],
     credibility: 4,
     isUrgent: true,
@@ -117,6 +124,7 @@ const MOCK_REPORTS: IngestReport[] = [
     report:
       'Local health authorities in two provinces have imposed movement restrictions following a cluster of unspecified respiratory illness. Regional WHO office has dispatched a rapid response team. Case count is unconfirmed but estimated at over 400.',
     timestamp: '2026-03-27T21:10:00Z',
+    lastUpdated: '2026-03-28T07:45:00Z',
     keywords: ['WHO', 'respiratory', 'restrictions', 'cluster', 'outbreak'],
     credibility: 7,
     isUrgent: true,
@@ -130,6 +138,7 @@ const MOCK_REPORTS: IngestReport[] = [
     report:
       'Preliminary Q1 trade data from a G20 member shows a 14% contraction in exports, significantly below consensus estimates. The data has not yet been officially published; figures cited from an early government briefing document.',
     timestamp: '2026-03-27T16:45:00Z',
+    lastUpdated: '2026-03-27T19:10:00Z',
     keywords: ['trade', 'G20', 'exports', 'contraction', 'Q1'],
     credibility: 6,
     isUrgent: false,
@@ -143,6 +152,7 @@ const MOCK_REPORTS: IngestReport[] = [
     report:
       'A major cloud provider experienced a partial outage affecting government-tier contracts in two regions for approximately 90 minutes. Internal post-mortem cites a misconfigured routing table update pushed during a routine maintenance window.',
     timestamp: '2026-03-27T11:30:00Z',
+    lastUpdated: '2026-03-27T14:05:00Z',
     keywords: ['cloud', 'outage', 'government', 'routing', 'maintenance'],
     credibility: 9,
     isUrgent: false,
@@ -156,6 +166,7 @@ const MOCK_REPORTS: IngestReport[] = [
     report:
       'An NGO monitoring industrial discharge reports elevated toxin levels in a river basin shared by two nations. The readings, taken over three consecutive days, exceed safe limits by a factor of 6. Neither government has responded to press inquiries.',
     timestamp: '2026-03-26T08:00:00Z',
+    lastUpdated: '2026-03-26T11:30:00Z',
     keywords: ['environment', 'toxin', 'river', 'discharge', 'NGO'],
     credibility: 7,
     isUrgent: false,
@@ -198,14 +209,14 @@ const CHANNEL_TYPE_ICONS: Record<string, React.ReactNode> = {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function timeAgo(dateStr: string): string {
-  const diff = Date.now() - new Date(dateStr).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 1) return 'Just now';
-  if (mins < 60) return `${mins}m ago`;
-  const hours = Math.floor(mins / 60);
-  if (hours < 24) return `${hours}h ago`;
-  return `${Math.floor(hours / 24)}d ago`;
+function formatLocalTime(dateStr: string): string {
+  return new Date(dateStr).toLocaleString(undefined, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 }
 
 function credibilityColor(score: number): string {
@@ -268,7 +279,9 @@ function ReportCard({ item }: { item: IngestReport }) {
             {item.channelType}
           </span>
         </div>
-        <span className="text-[10px] text-[#505070] shrink-0 ml-3">{timeAgo(item.timestamp)}</span>
+        <span className="text-[10px] text-[#505070] shrink-0 ml-3">
+          Last updated: {formatLocalTime(item.lastUpdated)}
+        </span>
       </div>
 
       {/* Badges */}
