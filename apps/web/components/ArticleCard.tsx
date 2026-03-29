@@ -19,17 +19,17 @@ const CATEGORY_COLORS: Record<string, string> = {
   Sports: '#FFB800',
 };
 
-function timeAgo(dateString: string | undefined): string {
+function formatLocalTime(dateString: string | undefined): string {
   if (!dateString) return '';
-  const diff = Date.now() - new Date(dateString).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 1) return 'just now';
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  const days = Math.floor(hrs / 24);
-  if (days < 7) return `${days}d ago`;
-  return new Date(dateString).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  // Ensure the string is treated as UTC by appending Z if no timezone offset is present
+  const normalized = /[Z+\-]\d*$/.test(dateString) ? dateString : dateString + 'Z';
+  return new Date(normalized).toLocaleString(undefined, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 }
 
 interface ArticleCardProps {
@@ -120,14 +120,20 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, onReadMore, language
           {summary}
         </p>
 
+        {/* Last updated — always visible, outside the meta row */}
+        {(article.last_updated || article.timestamp || article.date) && (
+          <p className="text-[11px] text-[#505070]">
+            Last updated:{' '}
+            <span className="text-[#A8A8C0]">
+              {formatLocalTime(article.last_updated || article.timestamp || article.date)}
+            </span>
+          </p>
+        )}
+
         {/* Meta row */}
         <div className="flex items-center gap-2 mt-auto pt-1">
           <span className="text-[11px] text-[#505070] font-medium truncate">
             {article.source || t('article.default_source')}
-          </span>
-          <span className="text-[#1E1E2A]" aria-hidden="true">·</span>
-          <span className="text-[11px] text-[#505070] shrink-0">
-            {timeAgo(article.timestamp || article.date)}
           </span>
           <span className="text-[#1E1E2A]" aria-hidden="true">·</span>
           {/* Credibility dots */}
