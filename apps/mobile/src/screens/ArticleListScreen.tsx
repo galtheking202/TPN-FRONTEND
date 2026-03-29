@@ -154,6 +154,9 @@ const [searchVisible, setSearchVisible] = useState(false);
           <Pressable style={styles.iconBtn} onPress={toggleSearch}>
             <Ionicons name={searchVisible ? 'close' : 'search'} size={18} color={COLORS.textSub} />
           </Pressable>
+          <Pressable style={styles.iconBtn} onPress={() => navigation.navigate('JournalistSearch')}>
+            <Ionicons name="newspaper-outline" size={18} color={COLORS.textSub} />
+          </Pressable>
           <Pressable style={styles.iconBtn} onPress={() => navigation.navigate('Settings')}>
             <Ionicons name="settings-outline" size={18} color={COLORS.textSub} />
             {savedFilters.some(f => f.enabled) && <View style={styles.filterDot} />}

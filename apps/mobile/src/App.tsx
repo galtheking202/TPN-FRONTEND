@@ -10,6 +10,7 @@ import ArticleDetailScreen from './screens/ArticleDetailScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import FilterBuilderScreen from './screens/FilterBuilderScreen';
 import PinnedArticlesScreen from './screens/PinnedArticlesScreen';
+import JournalistSearchScreen from './screens/JournalistSearchScreen';
 
 export type RootStackParamList = {
   ArticleList: undefined;
@@ -17,6 +18,7 @@ export type RootStackParamList = {
   Settings: undefined;
   FilterBuilder: { filter?: SavedFilter; articles: Article[] };
   PinnedArticles: undefined;
+  JournalistSearch: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -37,6 +39,7 @@ function AppContent() {
             <Stack.Screen name="Settings" component={SettingsScreen} />
             <Stack.Screen name="FilterBuilder" component={FilterBuilderScreen} options={{ animation: 'slide_from_bottom' }} />
             <Stack.Screen name="PinnedArticles" component={PinnedArticlesScreen} />
+            <Stack.Screen name="JournalistSearch" component={JournalistSearchScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaProvider>
