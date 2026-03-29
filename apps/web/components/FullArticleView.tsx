@@ -36,8 +36,9 @@ const FullArticleView: React.FC<FullArticleViewProps> = ({ article, onClose, lan
 
   const formatDate = (dateString: string | undefined): string => {
     if (!dateString) return t('article.date_unknown');
-    const date = new Date(dateString);
-    return date.toLocaleString(locale, {
+    // Append Z if no timezone offset present so the string is treated as UTC
+    const normalized = /[Z+\-]\d*$/.test(dateString) ? dateString : dateString + 'Z';
+    return new Date(normalized).toLocaleString(undefined, {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
@@ -166,7 +167,7 @@ const FullArticleView: React.FC<FullArticleViewProps> = ({ article, onClose, lan
               </span>
               <span className="text-[#1E1E2A]" aria-hidden="true">|</span>
               <span className="mono text-xs text-[#505070] font-bold uppercase tracking-widest">
-                {formatDate(article.timestamp || article.date)}
+                Last updated: {formatDate(article.last_updated || article.timestamp || article.date)}
               </span>
               {article.credibility_score !== undefined && (
                 <>
