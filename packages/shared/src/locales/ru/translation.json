@@ -1,7 +1,7 @@
 {
   "app": {
-    "title": "tpn",
-    "subtitle": "Новости Народа"
+    "title": "Connex",
+    "subtitle": "Connex"
   },
   "search": {
     "placeholder": "Поиск статей...",
@@ -29,7 +29,7 @@
     "no_content": "Дополнительный контент для этой статьи недоступен.",
     "date_unknown": "Дата неизвестна",
     "breaking": "СРОЧНО",
-    "default_source": "Новости Народа",
+    "default_source": "Connex",
     "credibility_high": "ВЫСОКАЯ",
     "credibility_moderate": "УМЕРЕННАЯ",
     "credibility_low": "НИЗКАЯ",

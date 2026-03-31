@@ -185,7 +185,7 @@ export default function SettingsScreen({ navigation }: Props) {
           <View style={styles.row}>
             <View style={styles.rowIcon}><Ionicons name="globe-outline" size={18} color={COLORS.textMuted} /></View>
             <Text style={styles.rowLabel}>Data Source</Text>
-            <Text style={styles.rowValue}>TPN Server</Text>
+            <Text style={styles.rowValue}>Connex Server</Text>
           </View>
         </View>
 

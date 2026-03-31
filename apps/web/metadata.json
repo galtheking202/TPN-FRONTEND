@@ -1,6 +1,6 @@
 
 {
-  "name": "tpn - the people news",
+  "name": "Connex",
   "description": "Independent news for the people, delivered with clarity and focus.",
   "requestFramePermissions": [
     "geolocation"

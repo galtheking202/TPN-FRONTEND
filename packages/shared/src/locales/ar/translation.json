@@ -1,7 +1,7 @@
 {
   "app": {
-    "title": "tpn",
-    "subtitle": "أخبار الشعب"
+    "title": "Connex",
+    "subtitle": "Connex"
   },
   "search": {
     "placeholder": "البحث في المقالات...",
@@ -29,7 +29,7 @@
     "no_content": "لا يوجد محتوى إضافي متاح لهذا المقال.",
     "date_unknown": "تاريخ غير معروف",
     "breaking": "عاجل",
-    "default_source": "أخبار الشعب",
+    "default_source": "Connex",
     "credibility_high": "عالية",
     "credibility_moderate": "متوسطة",
     "credibility_low": "منخفضة",

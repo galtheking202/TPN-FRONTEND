@@ -1,7 +1,7 @@
 {
   "app": {
-    "title": "tpn",
-    "subtitle": "The People News"
+    "title": "Connex",
+    "subtitle": "Connex"
   },
   "search": {
     "placeholder": "Search articles...",
@@ -29,7 +29,7 @@
     "no_content": "No additional content available for this article.",
     "date_unknown": "Date unknown",
     "breaking": "BREAKING",
-    "default_source": "The People News",
+    "default_source": "Connex",
     "credibility_high": "HIGH",
     "credibility_moderate": "MODERATE",
     "credibility_low": "LOW",

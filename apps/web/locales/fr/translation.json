@@ -1,7 +1,7 @@
 {
   "app": {
-    "title": "tpn",
-    "subtitle": "Les Nouvelles du Peuple"
+    "title": "Connex",
+    "subtitle": "Connex"
   },
   "search": {
     "placeholder": "Rechercher des articles...",
@@ -29,7 +29,7 @@
     "no_content": "Aucun contenu supplémentaire disponible pour cet article.",
     "date_unknown": "Date inconnue",
     "breaking": "URGENT",
-    "default_source": "Les Nouvelles du Peuple",
+    "default_source": "Connex",
     "credibility_high": "ÉLEVÉE",
     "credibility_moderate": "MODÉRÉE",
     "credibility_low": "FAIBLE",

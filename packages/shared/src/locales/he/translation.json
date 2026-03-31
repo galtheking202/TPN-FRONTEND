@@ -1,7 +1,7 @@
 {
   "app": {
-    "title": "tpn",
-    "subtitle": "חדשות העם"
+    "title": "Connex",
+    "subtitle": "Connex"
   },
   "search": {
     "placeholder": "חיפוש כתבות...",
@@ -29,7 +29,7 @@
     "no_content": "אין תוכן נוסף זמין לכתבה זו.",
     "date_unknown": "תאריך לא ידוע",
     "breaking": "בלעדי",
-    "default_source": "חדשות העם",
+    "default_source": "Connex",
     "credibility_high": "גבוהה",
     "credibility_moderate": "בינונית",
     "credibility_low": "נמוכה",
