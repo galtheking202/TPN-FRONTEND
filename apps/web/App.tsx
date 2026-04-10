@@ -303,13 +303,7 @@ const App: React.FC = () => {
               className="block font-black tracking-[0.12em] text-white transition-all duration-300"
               style={{ fontSize: scrollState === 'top' ? '1.4rem' : '1rem' }}
             >
-              THE PEOPLE
-            </span>
-            <span
-              className="block font-black tracking-[0.45em] text-[#0057FF] transition-all duration-300"
-              style={{ fontSize: scrollState === 'top' ? '0.75rem' : '0.55rem' }}
-            >
-              NEWS
+              nowvx
             </span>
           </div>
 
