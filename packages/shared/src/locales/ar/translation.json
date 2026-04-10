@@ -1,7 +1,7 @@
 {
   "app": {
-    "title": "Connex",
-    "subtitle": "Connex"
+    "title": "nowvx",
+    "subtitle": "nowvx"
   },
   "search": {
     "placeholder": "البحث في المقالات...",
@@ -29,7 +29,7 @@
     "no_content": "لا يوجد محتوى إضافي متاح لهذا المقال.",
     "date_unknown": "تاريخ غير معروف",
     "breaking": "عاجل",
-    "default_source": "Connex",
+    "default_source": "nowvx",
     "credibility_high": "عالية",
     "credibility_moderate": "متوسطة",
     "credibility_low": "منخفضة",

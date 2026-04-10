@@ -1,7 +1,7 @@
 {
   "app": {
-    "title": "Connex",
-    "subtitle": "Connex"
+    "title": "nowvx",
+    "subtitle": "nowvx"
   },
   "search": {
     "placeholder": "חיפוש כתבות...",
@@ -29,7 +29,7 @@
     "no_content": "אין תוכן נוסף זמין לכתבה זו.",
     "date_unknown": "תאריך לא ידוע",
     "breaking": "בלעדי",
-    "default_source": "Connex",
+    "default_source": "nowvx",
     "credibility_high": "גבוהה",
     "credibility_moderate": "בינונית",
     "credibility_low": "נמוכה",

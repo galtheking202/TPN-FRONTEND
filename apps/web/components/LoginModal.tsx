@@ -50,7 +50,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ onLogin, onClose }) => {
       >
         {/* Branding */}
         <div className="text-center mb-8">
-          <div className="font-black tracking-tighter text-[#1E1A14] italic text-4xl leading-none">Connex</div>
+          <div className="font-black tracking-tighter text-[#1E1A14] italic text-4xl leading-none">nowvx</div>
         </div>
 
         <p className="text-center text-sm text-[#1E1A14]/50 mb-6 leading-relaxed">

@@ -1,7 +1,7 @@
 {
   "app": {
-    "title": "Connex",
-    "subtitle": "Connex"
+    "title": "nowvx",
+    "subtitle": "nowvx"
   },
   "search": {
     "placeholder": "Поиск статей...",
@@ -29,7 +29,7 @@
     "no_content": "Дополнительный контент для этой статьи недоступен.",
     "date_unknown": "Дата неизвестна",
     "breaking": "СРОЧНО",
-    "default_source": "Connex",
+    "default_source": "nowvx",
     "credibility_high": "ВЫСОКАЯ",
     "credibility_moderate": "УМЕРЕННАЯ",
     "credibility_low": "НИЗКАЯ",
