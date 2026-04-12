@@ -25,6 +25,10 @@ export default defineConfig(({ mode }) => {
           '/health': {
             target: 'http://localhost:8000',
             changeOrigin: true
+          },
+          '/ingest': {
+            target: 'http://localhost:8000',
+            changeOrigin: true
           }
         }
       },

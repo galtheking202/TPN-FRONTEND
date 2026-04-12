@@ -57,5 +57,14 @@
   "ticker": {
     "live": "En Direct",
     "aria": "Fil d'actualité en direct — survolez ou focalisez pour mettre en pause"
+  },
+  "journalist": {
+    "summary": "{{count}} rapports sur {{channels}} chaînes",
+    "updated": "Mis à jour {{time}}",
+    "no_data": "Aucun rapport trouvé."
+  },
+  "nav": {
+    "feed": "Fil",
+    "journalist_data": "Données journaliste"
   }
 }

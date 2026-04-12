@@ -57,5 +57,14 @@
   "ticker": {
     "live": "Live",
     "aria": "Live news ticker — hover or focus to pause"
+  },
+  "journalist": {
+    "summary": "{{count}} reports across {{channels}} channels",
+    "updated": "Updated {{time}}",
+    "no_data": "No ingest reports found."
+  },
+  "nav": {
+    "feed": "Feed",
+    "journalist_data": "Journalist Data"
   }
 }

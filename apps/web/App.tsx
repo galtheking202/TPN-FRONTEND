@@ -10,7 +10,10 @@ import SettingsDrawer from './components/SettingsDrawer';
 import { NotifPrefs } from './components/NotificationDrawer';
 import FilterBuilderScreen from './components/FilterBuilderScreen';
 import JournalistSearchScreen from './components/JournalistSearchScreen';
+import JournalistDataPage from './components/JournalistDataPage';
 import i18n from './i18n';
+
+const JOURNALIST_MODE = import.meta.env.VITE_JOURNALIST_MODE === 'true';
 
 const CATEGORIES = ['ALL', 'Politics', 'Economy', 'Health', 'Technology', 'Environment', 'Defence and Security', 'Sports'] as const;
 type LanguageCode = 'en' | 'he' | 'fr' | 'ru' | 'ar';
@@ -60,6 +63,9 @@ const App: React.FC = () => {
 
   // Journalist search
   const [showJournalistSearch, setShowJournalistSearch] = useState(false);
+
+  // View: 'feed' | 'journalist_data'
+  const [activeView, setActiveView] = useState<'feed' | 'journalist_data'>('feed');
 
   // Saved filters
   const [savedFilters, setSavedFilters] = useState<SavedFilter[]>(() => {
@@ -425,10 +431,31 @@ const App: React.FC = () => {
           </div>
         </div>
 
+        {/* View tab nav — only visible in journalist mode */}
+        {JOURNALIST_MODE && (
+          <div className="max-w-6xl mx-auto px-6 border-t border-[#1E1E2A]">
+            <div className="flex gap-0" dir="ltr">
+              {(['feed', 'journalist_data'] as const).map(view => (
+                <button
+                  key={view}
+                  onClick={() => setActiveView(view)}
+                  className={`py-2.5 px-4 text-[11px] font-bold tracking-widest uppercase border-b-2 transition-colors focus:outline-none ${
+                    activeView === view
+                      ? 'border-[#0057FF] text-white'
+                      : 'border-transparent text-[#505070] hover:text-[#A8A8C0]'
+                  }`}
+                >
+                  {view === 'feed' ? t('nav.feed') : t('nav.journalist_data')}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Category Filters — colored pill buttons */}
         <div
           className="max-w-6xl mx-auto px-6 overflow-hidden transition-all duration-300"
-          style={{ maxHeight: scrollState === 'top' ? '80px' : '0px', opacity: scrollState === 'top' ? 1 : 0 }}
+          style={{ maxHeight: scrollState === 'top' && activeView === 'feed' ? '80px' : '0px', opacity: scrollState === 'top' && activeView === 'feed' ? 1 : 0 }}
         >
           <div className="relative">
             <div className="flex gap-2 py-3 whitespace-nowrap overflow-x-auto scrollbar-hide">
@@ -457,7 +484,7 @@ const App: React.FC = () => {
         </div>
 
         {/* Region Filter */}
-        {regions.length > 0 && scrollState === 'top' && (
+        {regions.length > 0 && scrollState === 'top' && activeView === 'feed' && (
           <div className="max-w-6xl mx-auto px-6 pb-3">
             <div className="flex gap-2 whitespace-nowrap overflow-x-auto scrollbar-hide items-center">
               <span className="text-[10px] text-[#0057FF] font-bold tracking-widest uppercase shrink-0">
@@ -482,7 +509,7 @@ const App: React.FC = () => {
         )}
 
         {/* Active filter banner */}
-        {activeFilters.length > 0 && scrollState === 'top' && (
+        {activeFilters.length > 0 && scrollState === 'top' && activeView === 'feed' && (
           <div className="max-w-6xl mx-auto px-6 pb-3">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-[10px] text-[#0057FF] font-bold tracking-widest uppercase shrink-0">
@@ -505,9 +532,11 @@ const App: React.FC = () => {
         )}
       </header>
 
-      {/* ── Main Feed ─────────────────────────────────────────────────────────── */}
+      {/* ── Main Content ──────────────────────────────────────────────────────── */}
       <main className="max-w-5xl mx-auto px-6 pt-4 pb-16">
-        {loading && articles.length === 0 ? (
+        {activeView === 'journalist_data' ? (
+          <JournalistDataPage />
+        ) : loading && articles.length === 0 ? (
           <div className="flex flex-col items-center py-20 gap-4" aria-label={t('feed.loading_aria')} aria-busy="true">
             <div className="flex gap-1.5">
               {[0, 1, 2].map(i => (

@@ -57,5 +57,14 @@
   "ticker": {
     "live": "שידור חי",
     "aria": "טיקר חדשות חי — רחף או מקד כדי להשהות"
+  },
+  "journalist": {
+    "summary": "{{count}} דוחות ב-{{channels}} ערוצים",
+    "updated": "עודכן {{time}}",
+    "no_data": "לא נמצאו דוחות."
+  },
+  "nav": {
+    "feed": "עדכון",
+    "journalist_data": "נתוני עיתונאי"
   }
 }
