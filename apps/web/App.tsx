@@ -13,7 +13,8 @@ import JournalistSearchScreen from './components/JournalistSearchScreen';
 import JournalistDataPage from './components/JournalistDataPage';
 import i18n from './i18n';
 
-const JOURNALIST_MODE = import.meta.env.VITE_JOURNALIST_MODE === 'true';
+const _jm = String(import.meta.env.VITE_JOURNALIST_MODE ?? '').toLowerCase();
+const JOURNALIST_MODE = _jm !== '' && _jm !== 'false' && _jm !== '0';
 
 const CATEGORIES = ['ALL', 'Politics', 'Economy', 'Health', 'Technology', 'Environment', 'Defence and Security', 'Sports'] as const;
 type LanguageCode = 'en' | 'he' | 'fr' | 'ru' | 'ar';
