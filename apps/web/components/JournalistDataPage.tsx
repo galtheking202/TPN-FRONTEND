@@ -182,8 +182,11 @@ export default function JournalistDataPage() {
     setError(false);
     newsService
       .fetchIngestByChannel()
-      .then(result => { setData(result); })
-      .catch(() => { setError(true); })
+      .then(result => {
+        console.log('[ingest] parsed:', result.total_reports, 'reports,', result.channels.length, 'channels');
+        setData(result);
+      })
+      .catch((err) => { console.error('[ingest] fetch error:', err); setError(true); })
       .finally(() => setLoading(false));
   }, []);
 
@@ -215,8 +218,11 @@ export default function JournalistDataPage() {
 
   if (data.channels.length === 0) {
     return (
-      <div className="py-24 text-center border border-[#1E1E2A] rounded-xl">
+      <div className="py-24 text-center border border-[#1E1E2A] rounded-xl space-y-2">
         <p className="text-[#A8A8C0] text-sm">{t('journalist.no_data')}</p>
+        <p className="text-[#505070] text-[11px] font-mono">
+          DEBUG: total_reports={data.total_reports}, channels={data.channels.length}
+        </p>
       </div>
     );
   }

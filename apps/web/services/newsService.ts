@@ -42,8 +42,12 @@ export const newsService = {
       clearTimeout(timeout);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const raw = await response.json();
-      // Handle both flat array and object-wrapped responses
-      const reports: IngestReport[] = Array.isArray(raw) ? raw : (raw.reports ?? raw.data ?? []);
+      console.log('[ingest] raw response:', raw);
+
+      // Handle flat array or common object-wrapped shapes
+      const reports: IngestReport[] = Array.isArray(raw)
+        ? raw
+        : (raw.reports ?? raw.data ?? raw.items ?? raw.results ?? []);
 
       // Group by channel_name, sort A→Z
       const map = new Map<string, ChannelGroup>();
