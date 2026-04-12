@@ -18,8 +18,9 @@ export interface IngestReport {
 }
 
 export interface ChannelGroup {
+  channel_id: string;
   channel_name: string;
-  platform: 'telegram' | 'twitter' | 'x' | 'unknown';
+  platform: string;
   reports: IngestReport[];
 }
 
@@ -41,27 +42,9 @@ export const newsService = {
       const response = await fetch(`${API_URL}/ingest`, { signal: controller.signal });
       clearTimeout(timeout);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      // The server already returns { channels: [...], total_reports: N }
       const raw = await response.json();
-      console.log('[ingest] raw response:', raw);
-
-      // Handle flat array or common object-wrapped shapes
-      const reports: IngestReport[] = Array.isArray(raw)
-        ? raw
-        : (raw.reports ?? raw.data ?? raw.items ?? raw.results ?? []);
-
-      // Group by channel_name, sort A→Z
-      const map = new Map<string, ChannelGroup>();
-      for (const r of reports) {
-        const key = r.channel_name ?? 'Unknown';
-        if (!map.has(key)) {
-          map.set(key, { channel_name: key, platform: r.platform ?? 'unknown', reports: [] });
-        }
-        map.get(key)!.reports.push(r);
-      }
-      const channels = Array.from(map.values()).sort((a, b) =>
-        a.channel_name.localeCompare(b.channel_name)
-      );
-      return { channels, total_reports: reports.length };
+      return raw as IngestByChannelResponse;
     } catch (err) {
       clearTimeout(timeout);
       throw err;
