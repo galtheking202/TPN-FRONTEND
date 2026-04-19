@@ -10,6 +10,7 @@ const STORAGE_KEYS = {
   savedFilters: 'tpn_saved_filters',
   pinnedArticles: 'tpn_pinned_articles',
   notifPrefs: 'tpn_notif_prefs',
+  hasSeenWelcome: 'tpn_has_seen_welcome',
 };
 
 export interface PinnedArticle {
@@ -31,6 +32,8 @@ interface AppContextType {
   language: string;
   isRTL: boolean;
   setLanguage: (lang: string) => void;
+  hasSeenWelcome: boolean | null;
+  markWelcomeSeen: () => void;
   savedFilters: SavedFilter[];
   addFilter: (filter: SavedFilter) => void;
   updateFilter: (filter: SavedFilter) => void;
@@ -51,19 +54,22 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
   const [savedFilters, setSavedFilters] = useState<SavedFilter[]>([]);
   const [pinnedArticles, setPinnedArticles] = useState<PinnedArticle[]>([]);
   const [notifPrefs, setNotifPrefs] = useState<NotifPrefs>({ categories: [], regions: [] });
+  const [hasSeenWelcome, setHasSeenWelcome] = useState<boolean | null>(null);
 
   // Load all persisted state on mount
   useEffect(() => {
     (async () => {
       try {
-        const [filters, pins, prefs] = await Promise.all([
+        const [filters, pins, prefs, seen] = await Promise.all([
           AsyncStorage.getItem(STORAGE_KEYS.savedFilters),
           AsyncStorage.getItem(STORAGE_KEYS.pinnedArticles),
           AsyncStorage.getItem(STORAGE_KEYS.notifPrefs),
+          AsyncStorage.getItem(STORAGE_KEYS.hasSeenWelcome),
         ]);
         if (filters) setSavedFilters(JSON.parse(filters));
         if (pins) setPinnedArticles(JSON.parse(pins));
         if (prefs) setNotifPrefs(JSON.parse(prefs));
+        setHasSeenWelcome(seen === 'true');
       } catch {}
     })();
   }, []);
@@ -123,9 +129,15 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
     AsyncStorage.setItem(STORAGE_KEYS.notifPrefs, JSON.stringify(prefs));
   }, []);
 
+  const markWelcomeSeen = useCallback(() => {
+    setHasSeenWelcome(true);
+    AsyncStorage.setItem(STORAGE_KEYS.hasSeenWelcome, 'true');
+  }, []);
+
   return (
     <AppContext.Provider value={{
       language, isRTL, setLanguage,
+      hasSeenWelcome, markWelcomeSeen,
       savedFilters, addFilter, updateFilter, removeFilter, toggleFilter,
       pinnedArticles, isPinned, togglePin,
       notifPrefs, updateNotifPrefs,

@@ -5,6 +5,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import '@tpn/shared/i18n';
 import { Article, SavedFilter } from '@tpn/shared';
 import { AppContextProvider, useAppContext } from './context/AppContext';
+import WelcomeScreen from './screens/WelcomeScreen';
 import ArticleListScreen from './screens/ArticleListScreen';
 import ArticleDetailScreen from './screens/ArticleDetailScreen';
 import SettingsScreen from './screens/SettingsScreen';
@@ -13,6 +14,7 @@ import PinnedArticlesScreen from './screens/PinnedArticlesScreen';
 import JournalistSearchScreen from './screens/JournalistSearchScreen';
 
 export type RootStackParamList = {
+  Welcome: undefined;
   ArticleList: undefined;
   ArticleDetail: { article: Article };
   Settings: undefined;
@@ -24,16 +26,20 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function AppContent() {
-  const { isRTL } = useAppContext();
+  const { isRTL, hasSeenWelcome } = useAppContext();
+
+  // Wait until AsyncStorage is read before rendering navigation
+  if (hasSeenWelcome === null) return null;
 
   return (
     <View style={{ flex: 1, direction: isRTL ? 'rtl' : 'ltr' }}>
       <SafeAreaProvider>
         <NavigationContainer>
           <Stack.Navigator
-            initialRouteName="ArticleList"
+            initialRouteName={hasSeenWelcome ? 'ArticleList' : 'Welcome'}
             screenOptions={{ headerShown: false, animation: 'slide_from_right' }}
           >
+            <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ animation: 'fade' }} />
             <Stack.Screen name="ArticleList" component={ArticleListScreen} />
             <Stack.Screen name="ArticleDetail" component={ArticleDetailScreen} />
             <Stack.Screen name="Settings" component={SettingsScreen} />
