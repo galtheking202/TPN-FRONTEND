@@ -14,33 +14,19 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../App';
-
-// ─── Theme ────────────────────────────────────────────────────────────────────
-
-const COLORS = {
-  bg: '#0A0A0F',
-  surface: '#111118',
-  surfaceRaised: '#16161F',
-  border: '#1E1E2A',
-  primary: '#0057FF',
-  breaking: '#FF3333',
-  text: '#FFFFFF',
-  textSub: '#A8A8C0',
-  textMuted: '#505070',
-  accent: '#9747FF',
-};
+import { COLORS } from '../theme';
 
 const CATEGORY_COLORS: Record<string, string> = {
-  Politics: '#FF6B35',
-  Economy: '#00C896',
-  Health: '#FF4D6D',
-  Technology: '#0057FF',
-  Environment: '#3DBF6E',
-  'Defence and Security': '#9747FF',
-  Sports: '#FFB800',
-  Intelligence: '#FF3333',
-  Cyber: '#00D4FF',
-  Finance: '#00C896',
+  Politics: '#C06B4A',
+  Economy: '#5A9A8A',
+  Health: '#C4798A',
+  Technology: '#6B85C7',
+  Environment: '#7BA381',
+  'Defence and Security': '#8A7AB0',
+  Sports: '#C99A4C',
+  Intelligence: '#C46A5E',
+  Cyber: '#6B85C7',
+  Finance: '#5A9A8A',
 };
 
 // ─── Mock Data ────────────────────────────────────────────────────────────────
@@ -216,9 +202,9 @@ function timeAgo(dateStr: string): string {
 }
 
 function credibilityColor(score: number): string {
-  if (score >= 7) return '#00C896';
-  if (score >= 4) return '#FFB800';
-  return '#FF3333';
+  if (score >= 7) return COLORS.success;
+  if (score >= 4) return COLORS.warning;
+  return COLORS.breaking;
 }
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
@@ -386,7 +372,7 @@ export default function JournalistSearchScreen({ navigation }: Props) {
 
   return (
     <View style={[styles.root, { paddingTop: insets.top }]}>
-      <StatusBar barStyle="light-content" backgroundColor={COLORS.bg} />
+      <StatusBar barStyle="dark-content" backgroundColor={COLORS.bg} />
 
       {/* ── Header ── */}
       <View style={styles.header}>

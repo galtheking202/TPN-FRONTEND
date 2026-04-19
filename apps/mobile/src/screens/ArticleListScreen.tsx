@@ -20,21 +20,10 @@ import { Article, createNewsService } from '@tpn/shared';
 import { useAppContext } from '../context/AppContext';
 import ArticleImage from '../components/ArticleImage';
 import { RootStackParamList } from '../App';
+import { COLORS, CATEGORY_COLORS, DEFAULT_CAT } from '../theme';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL ?? '';
 const newsService = createNewsService(API_URL);
-
-const COLORS = {
-  bg: '#0A0A0F', surface: '#111118', surfaceRaised: '#16161F',
-  border: '#1E1E2A', primary: '#0057FF', breaking: '#FF3333',
-  text: '#FFFFFF', textSub: '#A8A8C0', textMuted: '#505070',
-};
-
-const CATEGORY_COLORS: Record<string, string> = {
-  Politics: '#FF6B35', Economy: '#00C896', Health: '#FF4D6D',
-  Technology: '#0057FF', Environment: '#3DBF6E',
-  'Defence and Security': '#9747FF', Sports: '#FFB800',
-};
 
 
 function timeAgo(dateStr?: string): string {
@@ -133,7 +122,7 @@ const [searchVisible, setSearchVisible] = useState(false);
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <StatusBar barStyle="light-content" backgroundColor={COLORS.bg} />
+        <StatusBar barStyle="dark-content" backgroundColor={COLORS.bg} />
         <View style={styles.loadingDot} />
         <Text style={styles.loadingText}>Loading news...</Text>
       </View>
@@ -142,13 +131,12 @@ const [searchVisible, setSearchVisible] = useState(false);
 
   return (
     <View style={[styles.container, { direction: isRTL ? 'rtl' : 'ltr' }]}>
-      <StatusBar barStyle="light-content" backgroundColor={COLORS.bg} />
+      <StatusBar barStyle="dark-content" backgroundColor={COLORS.bg} />
 
       {/* Header */}
       <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
         <View>
-          <Text style={styles.headerLogo}>THE PEOPLE</Text>
-          <Text style={styles.headerLogoAccent}>NEWS</Text>
+          <Text style={styles.headerLogo}>nowvx</Text>
         </View>
         <View style={styles.headerActions}>
           <Pressable style={styles.iconBtn} onPress={toggleSearch}>
@@ -244,19 +232,19 @@ const [searchVisible, setSearchVisible] = useState(false);
 
 function FeaturedCard({ article, title, pinned, onPress, onPin }: { article: Article; title: string; pinned: boolean; onPress: () => void; onPin: () => void }) {
   const { isRTL } = useAppContext();
-  const catColor = CATEGORY_COLORS[article.category] ?? COLORS.primary;
+  const cat = CATEGORY_COLORS[article.category] ?? DEFAULT_CAT;
   return (
     <Pressable style={styles.featured} onPress={onPress}>
       <ArticleImage uri={article.imageUrl} category={article.category} style={styles.featuredImage} />
       <View style={styles.featuredOverlay} />
       <Pressable style={[styles.pinBtn, isRTL ? { left: 12, right: undefined } : { right: 12, left: undefined }]} onPress={onPin}>
-        <Ionicons name={pinned ? 'bookmark' : 'bookmark-outline'} size={18} color={pinned ? COLORS.primary : '#fff'} />
+        <Ionicons name={pinned ? 'bookmark' : 'bookmark-outline'} size={18} color={pinned ? COLORS.primary : COLORS.text} />
       </Pressable>
       <View style={[styles.featuredContent, { direction: isRTL ? 'rtl' : 'ltr' }]}>
         <View style={[styles.featuredBadges, { flexDirection: isRTL ? 'row-reverse' : 'row' }]}>
-          {article.isUrgent && <View style={styles.breakingBadge}><Text style={styles.breakingText}>● BREAKING</Text></View>}
-          <View style={[styles.categoryBadge, { backgroundColor: catColor + '22', borderColor: catColor }]}>
-            <Text style={[styles.categoryBadgeText, { color: catColor }]}>{article.category.toUpperCase()}</Text>
+          {article.isUrgent && <View style={styles.breakingBadge}><Text style={styles.breakingText}>Breaking</Text></View>}
+          <View style={[styles.categoryBadge, { backgroundColor: cat.soft, borderColor: cat.solid }]}>
+            <Text style={[styles.categoryBadgeText, { color: cat.ink }]}>{article.category}</Text>
           </View>
         </View>
         <Text style={[styles.featuredTitle, { textAlign: isRTL ? 'right' : 'left' }]} numberOfLines={3}>{title}</Text>
@@ -273,14 +261,14 @@ function FeaturedCard({ article, title, pinned, onPress, onPin }: { article: Art
 
 function ArticleCard({ article, title, summary, pinned, onPress, onPin }: { article: Article; title: string; summary: string; pinned: boolean; onPress: () => void; onPin: () => void }) {
   const { isRTL } = useAppContext();
-  const catColor = CATEGORY_COLORS[article.category] ?? COLORS.primary;
+  const cat = CATEGORY_COLORS[article.category] ?? DEFAULT_CAT;
   return (
     <Pressable style={[styles.card, article.isUrgent && styles.cardUrgent]} onPress={onPress}>
       {article.isUrgent && <View style={styles.urgentStrip} />}
       <View style={[styles.cardBody, { direction: isRTL ? 'rtl' : 'ltr' }]}>
         <View style={[styles.cardTopRow, { flexDirection: isRTL ? 'row-reverse' : 'row' }]}>
-          <View style={[styles.categoryBadge, { backgroundColor: catColor + '22', borderColor: catColor }]}>
-            <Text style={[styles.categoryBadgeText, { color: catColor }]}>{article.category.toUpperCase()}</Text>
+          <View style={[styles.categoryBadge, { backgroundColor: cat.soft, borderColor: cat.solid }]}>
+            <Text style={[styles.categoryBadgeText, { color: cat.ink }]}>{article.category}</Text>
           </View>
           {article.region && <Text style={styles.regionTag}>📍 {article.region}</Text>}
         </View>
@@ -304,7 +292,7 @@ function ArticleCard({ article, title, summary, pinned, onPress, onPin }: { arti
 }
 
 function CredibilityDots({ score }: { score: number }) {
-  const level = score >= 7 ? COLORS.primary : score >= 4 ? '#FFB800' : COLORS.breaking;
+  const level = score >= 7 ? COLORS.success : score >= 4 ? COLORS.warning : COLORS.breaking;
   const filled = Math.round((score / 10) * 5);
   return (
     <View style={styles.dotsWrap}>
@@ -322,8 +310,8 @@ const styles = StyleSheet.create({
   loadingText: { color: COLORS.textMuted, fontSize: 13 },
 
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 16, paddingBottom: 10 },
-  headerLogo: { color: COLORS.text, fontSize: 18, fontWeight: '800', letterSpacing: 2 },
-  headerLogoAccent: { color: COLORS.primary, fontSize: 13, fontWeight: '700', letterSpacing: 4, marginTop: -4 },
+  headerLogo: { color: COLORS.text, fontSize: 22, fontWeight: '800', letterSpacing: 0.5 },
+  headerLogoAccent: { color: COLORS.primary, fontSize: 13, fontWeight: '600', letterSpacing: 1, marginTop: -4 },
   headerActions: { flexDirection: 'row', gap: 8 },
   iconBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: COLORS.surface, alignItems: 'center', justifyContent: 'center' },
   filterDot: { position: 'absolute', top: 6, right: 6, width: 7, height: 7, borderRadius: 4, backgroundColor: COLORS.primary, borderWidth: 1, borderColor: COLORS.bg },
@@ -346,29 +334,29 @@ listContent: { paddingBottom: 8 },
   featured: { marginHorizontal: 16, marginTop: 12, marginBottom: 4, borderRadius: 16, overflow: 'hidden', height: 240, backgroundColor: COLORS.surface },
   featuredImage: { position: 'absolute', width: '100%', height: '100%' },
   imagePlaceholder: { backgroundColor: COLORS.surfaceRaised },
-  featuredOverlay: { position: 'absolute', bottom: 0, left: 0, right: 0, height: '75%', backgroundColor: 'rgba(10,10,15,0.82)' },
-  pinBtn: { position: 'absolute', top: 12, backgroundColor: 'rgba(10,10,15,0.5)', padding: 8, borderRadius: 20 },
+  featuredOverlay: { position: 'absolute', bottom: 0, left: 0, right: 0, height: '70%', backgroundColor: 'rgba(31,27,22,0.75)' },
+  pinBtn: { position: 'absolute', top: 12, backgroundColor: 'rgba(250,247,242,0.85)', padding: 8, borderRadius: 20 },
   featuredContent: { position: 'absolute', bottom: 0, left: 0, right: 0, padding: 16 },
   featuredBadges: { flexDirection: 'row', gap: 8, marginBottom: 8 },
-  featuredTitle: { color: COLORS.text, fontSize: 18, fontWeight: '700', lineHeight: 24, marginBottom: 8 },
+  featuredTitle: { color: '#FFFFFF', fontSize: 18, fontWeight: '700', lineHeight: 24, marginBottom: 8 },
   featuredMeta: { flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' },
 
-  breakingBadge: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.breaking + '22', borderWidth: 1, borderColor: COLORS.breaking, borderRadius: 4, paddingHorizontal: 6, paddingVertical: 2 },
-  breakingText: { color: COLORS.breaking, fontSize: 9, fontWeight: '800', letterSpacing: 1 },
-  categoryBadge: { borderWidth: 1, borderRadius: 4, paddingHorizontal: 6, paddingVertical: 2, alignSelf: 'flex-start' },
-  categoryBadgeText: { fontSize: 9, fontWeight: '700', letterSpacing: 0.8 },
+  breakingBadge: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.dangerSoft, borderWidth: 1, borderColor: COLORS.breaking, borderRadius: 20, paddingHorizontal: 10, paddingVertical: 3 },
+  breakingText: { color: COLORS.breaking, fontSize: 11, fontWeight: '700' },
+  categoryBadge: { borderWidth: 1, borderRadius: 20, paddingHorizontal: 10, paddingVertical: 3, alignSelf: 'flex-start' },
+  categoryBadgeText: { fontSize: 11, fontWeight: '600' },
 
-  card: { flexDirection: 'row', marginHorizontal: 16, marginTop: 10, backgroundColor: COLORS.surface, borderRadius: 12, borderWidth: 1, borderColor: COLORS.border, overflow: 'hidden' },
-  cardUrgent: { borderColor: COLORS.breaking + '55' },
-  urgentStrip: { width: 3, backgroundColor: COLORS.breaking },
+  card: { flexDirection: 'row', marginHorizontal: 16, marginTop: 10, backgroundColor: COLORS.surface, borderRadius: 12, borderWidth: 1, borderColor: COLORS.border, overflow: 'hidden', shadowColor: 'rgba(60,45,20,0.06)', shadowOffset: { width: 0, height: 1 }, shadowRadius: 2, elevation: 1 },
+  cardUrgent: { borderLeftColor: COLORS.breaking, borderLeftWidth: 3 },
+  urgentStrip: { width: 0 },
   cardBody: { flex: 1, padding: 12, gap: 6 },
   cardTopRow: { flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' },
   cardTitle: { color: COLORS.text, fontSize: 14, fontWeight: '600', lineHeight: 20 },
   cardSummary: { color: COLORS.textSub, fontSize: 12, lineHeight: 17 },
   cardMeta: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 2, flexWrap: 'wrap' },
   cardRight: { justifyContent: 'center', paddingHorizontal: 10, paddingVertical: 10 },
-  cardThumb: { width: 76, height: 76, borderRadius: 10, opacity: 0.92 },
-  cardPinBtn: { position: 'absolute', bottom: 6, right: 6, backgroundColor: 'rgba(10,10,15,0.6)', padding: 4, borderRadius: 12 },
+  cardThumb: { width: 76, height: 76, borderRadius: 10 },
+  cardPinBtn: { position: 'absolute', bottom: 6, right: 6, backgroundColor: 'rgba(250,247,242,0.9)', padding: 4, borderRadius: 12 },
   regionTag: { color: COLORS.textMuted, fontSize: 10 },
 
   metaSource: { color: COLORS.textMuted, fontSize: 11, fontWeight: '500' },

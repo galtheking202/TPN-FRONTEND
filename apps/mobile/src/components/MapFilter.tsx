@@ -2,17 +2,12 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import MapView, { Polygon, Region } from 'react-native-maps';
 import { Article } from '@tpn/shared';
+import { COLORS } from '../theme';
 
-const COLORS = {
-  bg: '#0A0A0F',
-  surface: '#111118',
-  border: '#1E1E2A',
-  primary: '#0057FF',
-  primaryFill: 'rgba(0,87,255,0.25)',
-  unselectedFill: 'rgba(168,168,192,0.08)',
-  unselectedStroke: 'rgba(168,168,192,0.3)',
-  text: '#FFFFFF',
-  textMuted: '#505070',
+const MAP_COLORS = {
+  primaryFill: 'rgba(107,133,199,0.25)',
+  unselectedFill: 'rgba(138,130,111,0.08)',
+  unselectedStroke: 'rgba(138,130,111,0.3)',
 };
 
 interface RegionData {
@@ -108,8 +103,8 @@ export default function MapFilter({ articles, selected, onToggle, multiSelect = 
               <Polygon
                 key={r.name}
                 coordinates={r.coordinates}
-                fillColor={isSelected ? COLORS.primaryFill : COLORS.unselectedFill}
-                strokeColor={isSelected ? COLORS.primary : COLORS.unselectedStroke}
+                fillColor={isSelected ? MAP_COLORS.primaryFill : MAP_COLORS.unselectedFill}
+                strokeColor={isSelected ? COLORS.primary : MAP_COLORS.unselectedStroke}
                 strokeWidth={isSelected ? 2 : 1}
                 tappable
                 onPress={() => onToggle(r.name)}

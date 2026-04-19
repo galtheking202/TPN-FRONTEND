@@ -1,18 +1,77 @@
-/* ── Theme tokens (dark-only) ──────────────────────────────── */
+/* ============================================================
+   nowvx — design tokens (MILKY LIGHT PALETTE)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=Frank+Ruhl+Libre:wght@400;700;900&family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 :root {
-  --bg:             #0A0A0F;
-  --surface:        #111118;
-  --surface-raised: #16161F;
-  --border:         #1E1E2A;
-  --primary:        #0057FF;
-  --text:           #FFFFFF;
-  --text-sub:       #A8A8C0;
-  --text-muted:     #505070;
+  /* ── Surface hierarchy ── */
+  --bg:              #FAF7F2;
+  --surface:         #FFFFFF;
+  --surface-raised:  #FFFDF9;
+  --surface-alt:     #F3EFE7;
+  --border:          #E8E2D6;
+  --border-strong:   #D4CDBD;
+
+  /* ── Text ── */
+  --text:        #1F1B16;
+  --text-sub:    #5C5648;
+  --text-muted:  #8A826F;
+
+  /* ── Primary (soft periwinkle) ── */
+  --primary:       #6B85C7;
+  --primary-hover: #5269A8;
+  --primary-soft:  #D8E0F0;
+
+  /* ── Semantic status ── */
+  --danger:        #C46A5E;
+  --danger-soft:   #F5D9D2;
+  --warning:       #C99A4C;
+  --warning-soft:  #F2E4C8;
+  --success:       #6B9B7B;
+  --success-soft:  #D6E6DB;
+
+  /* ── Shadows (warm-tinted) ── */
+  --shadow-sm: 0 1px 2px rgba(60, 45, 20, 0.06);
+  --shadow-md: 0 4px 12px rgba(60, 45, 20, 0.08);
+  --shadow-lg: 0 12px 28px rgba(60, 45, 20, 0.10);
+  --shadow-xl: 0 20px 48px rgba(60, 45, 20, 0.12);
 }
 
-/* ── Shared utilities ─────────────────────────────────────── */
-.mono { font-family: 'IBM Plex Mono', monospace; }
+html, body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "liga" 1, "kern" 1;
+}
 
+::selection {
+  background-color: var(--primary-soft);
+  color: var(--text);
+}
+
+/* ── Utilities ── */
+.mono { font-family: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace; }
+
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Category badge ── */
+.category-badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  line-height: 1.5;
+}
+
+/* ── Ticker animation ── */
 @keyframes ticker {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
@@ -24,26 +83,28 @@
 }
 .animate-ticker:hover { animation-play-state: paused; }
 
-::selection {
-  background-color: #0057FF;
-  color: #FFFFFF;
+/* ── Loading bounce ── */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0);    opacity: 0.4; }
+  50%       { transform: translateY(-6px); opacity: 1;   }
 }
 
-/* ── Article body typography ────────────────────────────────── */
+/* ── Live pulse ── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+/* ── Spin ── */
+@keyframes spin { to { transform: rotate(360deg); } }
+.animate-spin { animation: spin 1s linear infinite; }
+
+/* ── Article body ── */
 .article-body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   font-feature-settings: "liga" 1, "kern" 1;
-}
-
-/* ── Category badge base ─────────────────────────────────────── */
-.category-badge {
-  display: inline-block;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 2px 8px;
-  border-radius: 4px;
-  line-height: 1.6;
+  color: var(--text);
+  font-size: 17px;
+  line-height: 1.7;
 }

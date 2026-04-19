@@ -17,18 +17,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppContext } from '../context/AppContext';
 import ArticleImage from '../components/ArticleImage';
 import { RootStackParamList } from '../App';
-
-const COLORS = {
-  bg: '#0A0A0F', surface: '#111118', surfaceRaised: '#16161F',
-  border: '#1E1E2A', primary: '#0057FF', breaking: '#FF3333',
-  text: '#FFFFFF', textSub: '#A8A8C0', textMuted: '#505070',
-};
-
-const CATEGORY_COLORS: Record<string, string> = {
-  Politics: '#FF6B35', Economy: '#00C896', Health: '#FF4D6D',
-  Technology: '#0057FF', Environment: '#3DBF6E',
-  'Defence and Security': '#9747FF', Sports: '#FFB800',
-};
+import { COLORS, CATEGORY_COLORS, DEFAULT_CAT } from '../theme';
 
 function formatLocalDateTime(dateStr?: string): string {
   if (!dateStr) return '';
@@ -43,9 +32,9 @@ function formatLocalDateTime(dateStr?: string): string {
 }
 
 function credibilityLabel(score: number): { label: string; color: string } {
-  if (score >= 7) return { label: 'HIGH', color: COLORS.primary };
-  if (score >= 4) return { label: 'MODERATE', color: '#FFB800' };
-  return { label: 'LOW', color: COLORS.breaking };
+  if (score >= 7) return { label: 'High', color: COLORS.success };
+  if (score >= 4) return { label: 'Moderate', color: COLORS.warning };
+  return { label: 'Low', color: COLORS.breaking };
 }
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ArticleDetail'>;
@@ -64,7 +53,7 @@ export default function ArticleDetailScreen({ navigation, route }: Props) {
   const body = langContent?.body ?? article.content ?? t('article.no_content');
   const summary = langContent?.summary ?? article.summary;
   const sources = article.external_sources ?? langContent?.external_sources ?? [];
-  const catColor = CATEGORY_COLORS[article.category] ?? COLORS.primary;
+  const cat = CATEGORY_COLORS[article.category] ?? DEFAULT_CAT;
   const pinned = isPinned(article.id);
 
   const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -75,7 +64,7 @@ export default function ArticleDetailScreen({ navigation, route }: Props) {
 
   return (
     <View style={[styles.container, { direction: isRTL ? 'rtl' : 'ltr' }]}>
-      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
+      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
 
       {/* Reading progress bar */}
       <View style={[styles.progressTrack, { top: 0 }]}>
@@ -118,8 +107,8 @@ export default function ArticleDetailScreen({ navigation, route }: Props) {
       >
         {/* Category + Credibility + Region */}
         <View style={[styles.topRow, { flexDirection: isRTL ? 'row-reverse' : 'row' }]}>
-          <View style={[styles.categoryChip, { backgroundColor: catColor + '22', borderColor: catColor }]}>
-            <Text style={[styles.categoryChipText, { color: catColor }]}>{article.category.toUpperCase()}</Text>
+          <View style={[styles.categoryChip, { backgroundColor: cat.soft, borderColor: cat.solid }]}>
+            <Text style={[styles.categoryChipText, { color: cat.ink }]}>{article.category}</Text>
           </View>
           {article.credibility_score !== undefined && <CredibilityBadge score={article.credibility_score} />}
           {article.region && (
@@ -192,13 +181,13 @@ const styles = StyleSheet.create({
   heroImage: { width: '100%', height: '100%' },
   heroPlaceholder: { width: '100%', height: '100%', backgroundColor: COLORS.surfaceRaised, alignItems: 'center', justifyContent: 'center' },
   heroPlaceholderIcon: { fontSize: 48 },
-  heroOverlay: { position: 'absolute', bottom: 0, left: 0, right: 0, height: '50%', backgroundColor: 'rgba(10,10,15,0.7)' },
+  heroOverlay: { position: 'absolute', bottom: 0, left: 0, right: 0, height: '50%', backgroundColor: 'rgba(31,27,22,0.65)' },
 
-  backBtn: { position: 'absolute', flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: 'rgba(10,10,15,0.6)', paddingHorizontal: 12, paddingVertical: 7, borderRadius: 20, borderWidth: 1, borderColor: 'rgba(255,255,255,0.15)' },
+  backBtn: { position: 'absolute', flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: 'rgba(250,247,242,0.88)', paddingHorizontal: 12, paddingVertical: 7, borderRadius: 20, borderWidth: 1, borderColor: 'rgba(232,226,214,0.6)' },
   backText: { color: COLORS.text, fontSize: 13, fontWeight: '500' },
-  heroAction: { position: 'absolute', backgroundColor: 'rgba(10,10,15,0.6)', padding: 9, borderRadius: 20, borderWidth: 1, borderColor: 'rgba(255,255,255,0.15)' },
-  breakingBadge: { position: 'absolute', bottom: 16, left: 16, flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.breaking, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 4 },
-  breakingText: { color: '#fff', fontSize: 10, fontWeight: '800', letterSpacing: 1 },
+  heroAction: { position: 'absolute', backgroundColor: 'rgba(250,247,242,0.88)', padding: 9, borderRadius: 20, borderWidth: 1, borderColor: 'rgba(232,226,214,0.6)' },
+  breakingBadge: { position: 'absolute', bottom: 16, left: 16, flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.dangerSoft, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20, borderWidth: 1, borderColor: COLORS.breaking },
+  breakingText: { color: COLORS.breaking, fontSize: 11, fontWeight: '700' },
 
   scroll: { flex: 1 },
   content: { paddingHorizontal: 20, paddingTop: 20 },
@@ -221,7 +210,7 @@ const styles = StyleSheet.create({
   metaSep: { color: COLORS.border, fontSize: 12 },
   divider: { height: 1, backgroundColor: COLORS.border, marginBottom: 16 },
   summary: { color: COLORS.textSub, fontSize: 15, lineHeight: 24, fontStyle: 'italic', marginBottom: 16 },
-  body: { color: '#D0D0E8', fontSize: 15, lineHeight: 26 },
+  body: { color: COLORS.text, fontSize: 15, lineHeight: 26 },
 
   sourcesSection: { marginTop: 28, padding: 16, backgroundColor: COLORS.surface, borderRadius: 12, borderWidth: 1, borderColor: COLORS.border },
   sourcesTitle: { color: COLORS.textMuted, fontSize: 10, fontWeight: '700', letterSpacing: 1.5, marginBottom: 12 },

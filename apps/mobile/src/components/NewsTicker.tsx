@@ -2,16 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Article } from '@tpn/shared';
 import { useAppContext } from '../context/AppContext';
+import { COLORS } from '../theme';
 
-const COLORS = {
-  bg: '#0D0D14',
-  border: '#1E1E2A',
-  primary: '#0057FF',
-  breaking: '#FF3333',
-  text: '#A8A8C0',
-  textBright: '#FFFFFF',
-  live: '#FF3333',
-};
+const LIVE_COLOR = COLORS.breaking;
 
 const TICKER_SPEED = 60; // pixels per second
 const ITEM_GAP = 60;     // px gap between items
@@ -123,10 +116,10 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: COLORS.live,
+    backgroundColor: LIVE_COLOR,
   },
   liveText: {
-    color: COLORS.live,
+    color: LIVE_COLOR,
     fontSize: 9,
     fontWeight: '800',
     letterSpacing: 1.5,
@@ -151,7 +144,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
   },
   headline: {
-    color: COLORS.text,
+    color: COLORS.textSub,
     fontSize: 11,
     fontWeight: '500',
     maxWidth: 260,

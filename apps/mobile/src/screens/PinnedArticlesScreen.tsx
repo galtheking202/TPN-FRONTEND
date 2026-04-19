@@ -13,16 +13,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppContext } from '../context/AppContext';
 import ArticleImage from '../components/ArticleImage';
 import { RootStackParamList } from '../App';
-
-const COLORS = {
-  bg: '#0A0A0F',
-  surface: '#111118',
-  border: '#1E1E2A',
-  primary: '#0057FF',
-  text: '#FFFFFF',
-  textSub: '#A8A8C0',
-  textMuted: '#505070',
-};
+import { COLORS } from '../theme';
 
 const CATEGORY_COLORS: Record<string, string> = {
   Politics: '#FF6B35', Economy: '#00C896', Health: '#FF4D6D',
@@ -38,7 +29,7 @@ export default function PinnedArticlesScreen({ navigation }: Props) {
 
   return (
     <View style={[styles.container, { direction: isRTL ? 'rtl' : 'ltr' }]}>
-      <StatusBar barStyle="light-content" backgroundColor={COLORS.bg} />
+      <StatusBar barStyle="dark-content" backgroundColor={COLORS.bg} />
 
       <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
         <Pressable style={styles.backBtn} onPress={() => navigation.goBack()}>

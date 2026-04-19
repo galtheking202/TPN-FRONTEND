@@ -17,23 +17,11 @@ import { SavedFilter, FilterType } from '@tpn/shared';
 import { useAppContext } from '../context/AppContext';
 import MapFilter from '../components/MapFilter';
 import { RootStackParamList } from '../App';
+import { COLORS, CATEGORY_COLORS as CAT_COLORS } from '../theme';
 
-const COLORS = {
-  bg: '#0A0A0F',
-  surface: '#111118',
-  border: '#1E1E2A',
-  primary: '#0057FF',
-  text: '#FFFFFF',
-  textSub: '#A8A8C0',
-  textMuted: '#505070',
-  error: '#FF3333',
-};
-
-const CATEGORY_COLORS: Record<string, string> = {
-  Politics: '#FF6B35', Economy: '#00C896', Health: '#FF4D6D',
-  Technology: '#0057FF', Environment: '#3DBF6E',
-  'Defence and Security': '#9747FF', Sports: '#FFB800',
-};
+const CATEGORY_COLORS: Record<string, string> = Object.fromEntries(
+  Object.entries(CAT_COLORS).map(([k, v]) => [k, v.solid])
+);
 const ALL_CATEGORIES = ['Politics', 'Economy', 'Health', 'Technology', 'Environment', 'Defence and Security', 'Sports'];
 
 type Props = NativeStackScreenProps<RootStackParamList, 'FilterBuilder'>;
@@ -81,7 +69,7 @@ export default function FilterBuilderScreen({ navigation, route }: Props) {
 
   return (
     <KeyboardAvoidingView style={[styles.container, { direction: isRTL ? 'rtl' : 'ltr' }]} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <StatusBar barStyle="light-content" backgroundColor={COLORS.bg} />
+      <StatusBar barStyle="dark-content" backgroundColor={COLORS.bg} />
 
       {/* Header */}
       <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
@@ -189,8 +177,8 @@ const styles = StyleSheet.create({
   label: { color: COLORS.textMuted, fontSize: 10, fontWeight: '700', letterSpacing: 1.5, marginBottom: 10, marginTop: 20 },
   labelSub: { color: COLORS.textMuted, fontSize: 9, fontWeight: '400', letterSpacing: 0 },
   nameInput: { backgroundColor: COLORS.surface, borderRadius: 10, borderWidth: 1, borderColor: COLORS.border, paddingHorizontal: 14, paddingVertical: 12, color: COLORS.text, fontSize: 15 },
-  nameInputError: { borderColor: COLORS.error },
-  errorText: { color: COLORS.error, fontSize: 12, marginTop: 6 },
+  nameInputError: { borderColor: COLORS.breaking },
+  errorText: { color: COLORS.breaking, fontSize: 12, marginTop: 6 },
   categoryGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   catChip: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 12, paddingVertical: 7, borderRadius: 20, borderWidth: 1 },
   catChipText: { fontSize: 12, fontWeight: '500' },

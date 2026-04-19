@@ -19,14 +19,14 @@ const CATEGORIES = ['ALL', 'Politics', 'Economy', 'Health', 'Technology', 'Envir
 type LanguageCode = 'en' | 'he' | 'fr' | 'ru' | 'ar';
 
 const CATEGORY_COLORS: Record<string, string> = {
-  ALL: '#0057FF',
-  Politics: '#FF6B35',
-  Economy: '#00C896',
-  Health: '#FF4D6D',
-  Technology: '#0057FF',
-  Environment: '#3DBF6E',
-  'Defence and Security': '#9747FF',
-  Sports: '#FFB800',
+  ALL: '#6B85C7',
+  Politics: '#C06B4A',
+  Economy: '#5A9A8A',
+  Health: '#C4798A',
+  Technology: '#6B85C7',
+  Environment: '#7BA381',
+  'Defence and Security': '#8A7AB0',
+  Sports: '#C99A4C',
 };
 
 const EMPTY_NOTIF_PREFS: NotifPrefs = { categories: [], regions: [], pinnedArticles: [] };
@@ -84,9 +84,9 @@ const App: React.FC = () => {
   const [toast, setToast] = useState<string | null>(null);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // ── Always dark ───────────────────────────────────────────────────────────────
+  // ── Always light ─────────────────────────────────────────────────────────────
   useEffect(() => {
-    document.documentElement.classList.add('dark');
+    document.documentElement.classList.remove('dark');
   }, []);
 
   // ── Load user from localStorage ───────────────────────────────────────────────
@@ -288,10 +288,10 @@ const App: React.FC = () => {
   const pinnedIds = useMemo(() => new Set(notifPrefs.pinnedArticles.map(a => a.id)), [notifPrefs.pinnedArticles]);
 
   return (
-    <div className="min-h-screen bg-[#0A0A0F] text-white">
+    <div className="min-h-screen bg-[#FAF7F2] text-[#1F1B16]">
       {/* ── Header ────────────────────────────────────────────────────────────── */}
       <header
-        className="border-b border-[#1E1E2A] bg-[#111118]/95 backdrop-blur-sm sticky top-0 z-40 transition-transform duration-300"
+        className="border-b border-[#E8E2D6] bg-white/95 backdrop-blur-sm sticky top-0 z-40 transition-transform duration-300"
         style={{ transform: scrollState === 'down' ? 'translateY(-100%)' : 'translateY(0)' }}
       >
         {/* Top row */}
@@ -306,7 +306,7 @@ const App: React.FC = () => {
           {/* Stacked branding */}
           <div className="flex flex-col items-start shrink-0 leading-none">
             <span
-              className="block font-black tracking-[0.12em] text-white transition-all duration-300"
+              className="block font-black tracking-[0.02em] text-[#1F1B16] transition-all duration-300"
               style={{ fontSize: scrollState === 'top' ? '1.4rem' : '1rem' }}
             >
               nowvx
@@ -329,11 +329,11 @@ const App: React.FC = () => {
                 }}
                 placeholder={t('search.placeholder')}
                 aria-label={t('search.aria')}
-                className="w-full px-4 py-2 bg-[#1E1E2A] border border-[#1E1E2A] text-white placeholder-[#505070] focus:outline-none focus:ring-2 focus:ring-[#0057FF] text-sm rounded-lg"
+                className="w-full px-4 py-2 bg-white border border-[#E8E2D6] text-[#1F1B16] placeholder-[#8A826F] focus:outline-none focus:ring-2 focus:ring-[#6B85C7]/40 focus:border-[#6B85C7] text-sm rounded-lg"
               />
               {isSearching && (
                 <div className="absolute right-3 top-1/2 -translate-y-1/2" aria-hidden="true">
-                  <div className="w-4 h-4 border-2 border-[#0057FF] border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-4 h-4 border-2 border-[#6B85C7] border-t-transparent rounded-full animate-spin"></div>
                 </div>
               )}
             </div>
@@ -344,18 +344,18 @@ const App: React.FC = () => {
 
             {/* Live indicator */}
             <div
-              className="text-[11px] mono font-bold tracking-widest text-[#0057FF] overflow-hidden transition-all duration-300 hidden sm:flex items-center gap-2 shrink-0"
+              className="text-[11px] mono font-bold tracking-widest text-[#6B85C7] overflow-hidden transition-all duration-300 hidden sm:flex items-center gap-2 shrink-0"
               style={{ maxWidth: scrollState === 'top' ? '80px' : '0px', opacity: scrollState === 'top' ? 1 : 0 }}
               aria-hidden="true"
             >
-              <span className="w-2 h-2 rounded-full bg-[#0057FF] animate-pulse shrink-0"></span>
+              <span className="w-2 h-2 rounded-full bg-[#6B85C7] animate-pulse shrink-0"></span>
               {t('header.live')}
             </div>
 
             {/* Journalist search button */}
             <button
               onClick={() => setShowJournalistSearch(true)}
-              className="relative text-white/40 hover:text-white transition-colors focus:outline-none"
+              className="relative text-[#8A826F] hover:text-[#1F1B16] transition-colors focus:outline-none"
               aria-label="Journalist ingest search"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -370,7 +370,7 @@ const App: React.FC = () => {
             {/* Settings button */}
             <button
               onClick={() => setShowSettings(true)}
-              className="relative text-white/40 hover:text-white transition-colors focus:outline-none"
+              className="relative text-[#8A826F] hover:text-[#1F1B16] transition-colors focus:outline-none"
               aria-label={`Settings${notifBadge > 0 ? `, ${notifBadge} active notifications` : ''}`}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -378,7 +378,7 @@ const App: React.FC = () => {
                 <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
               </svg>
               {notifBadge > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 min-w-[16px] h-4 bg-[#0057FF] text-white text-[9px] font-black flex items-center justify-center px-0.5 rounded-full">
+                <span className="absolute -top-1.5 -right-1.5 min-w-[16px] h-4 bg-[#6B85C7] text-white text-[9px] font-black flex items-center justify-center px-0.5 rounded-full">
                   {notifBadge > 9 ? '9+' : notifBadge}
                 </span>
               )}
@@ -389,29 +389,29 @@ const App: React.FC = () => {
               <div className="relative" ref={userMenuRef}>
                 <button
                   onClick={() => setShowUserMenu(v => !v)}
-                  className="w-7 h-7 bg-[#0057FF] text-white font-black text-[10px] flex items-center justify-center hover:bg-[#0046cc] transition-colors focus:outline-none rounded-full"
+                  className="w-7 h-7 bg-[#6B85C7] text-white font-black text-[10px] flex items-center justify-center hover:bg-[#5269A8] transition-colors focus:outline-none rounded-full"
                   aria-label={`User menu for ${user.name}`}
                   aria-expanded={showUserMenu}
                 >
                   {user.initials}
                 </button>
                 {showUserMenu && (
-                  <div className="absolute right-0 top-full mt-1 w-44 bg-[#111118] border border-[#1E1E2A] shadow-lg z-50 rounded-xl overflow-hidden">
-                    <div className="px-4 py-3 border-b border-[#1E1E2A]">
-                      <div className="text-[11px] font-black text-white truncate">{user.name}</div>
-                      <div className="text-[10px] text-[#505070] truncate">{user.email}</div>
+                  <div className="absolute right-0 top-full mt-1 w-44 bg-white border border-[#E8E2D6] shadow-lg z-50 rounded-xl overflow-hidden">
+                    <div className="px-4 py-3 border-b border-[#E8E2D6]">
+                      <div className="text-[11px] font-black text-[#1F1B16] truncate">{user.name}</div>
+                      <div className="text-[10px] text-[#8A826F] truncate">{user.email}</div>
                     </div>
                     <button
-                      className="w-full text-left px-4 py-2.5 text-[10px] font-bold tracking-widest uppercase hover:bg-[#1E1E2A] transition-colors text-[#A8A8C0]"
+                      className="w-full text-left px-4 py-2.5 text-[10px] font-bold tracking-wide hover:bg-[#F3EFE7] transition-colors text-[#5C5648]"
                       onClick={() => { setShowSettings(true); setShowUserMenu(false); }}
                     >
                       Settings
                     </button>
                     <button
-                      className="w-full text-left px-4 py-2.5 text-[10px] font-bold tracking-widest uppercase hover:bg-[#1E1E2A] transition-colors border-t border-[#1E1E2A] text-[#505070]"
+                      className="w-full text-left px-4 py-2.5 text-[10px] font-bold tracking-wide hover:bg-[#F3EFE7] transition-colors border-t border-[#E8E2D6] text-[#8A826F]"
                       onClick={handleLogout}
                     >
-                      Sign Out
+                      Sign out
                     </button>
                   </div>
                 )}
@@ -419,7 +419,7 @@ const App: React.FC = () => {
             ) : (
               <button
                 onClick={() => setShowLogin(true)}
-                className="text-[10px] font-black tracking-widest uppercase text-white/40 hover:text-white transition-colors flex items-center gap-1.5 shrink-0"
+                className="text-[10px] font-bold text-[#8A826F] hover:text-[#1F1B16] transition-colors flex items-center gap-1.5 shrink-0"
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
@@ -433,16 +433,16 @@ const App: React.FC = () => {
 
         {/* View tab nav — only visible in journalist mode */}
         {JOURNALIST_MODE && (
-          <div className="max-w-6xl mx-auto px-6 border-t border-[#1E1E2A]">
+          <div className="max-w-6xl mx-auto px-6 border-t border-[#E8E2D6]">
             <div className="flex gap-0" dir="ltr">
               {(['feed', 'journalist_data'] as const).map(view => (
                 <button
                   key={view}
                   onClick={() => setActiveView(view)}
-                  className={`py-2.5 px-4 text-[11px] font-bold tracking-widest uppercase border-b-2 transition-colors focus:outline-none ${
+                  className={`py-2.5 px-4 text-[13px] font-semibold border-b-2 transition-colors focus:outline-none ${
                     activeView === view
-                      ? 'border-[#0057FF] text-white'
-                      : 'border-transparent text-[#505070] hover:text-[#A8A8C0]'
+                      ? 'border-[#6B85C7] text-[#1F1B16]'
+                      : 'border-transparent text-[#8A826F] hover:text-[#5C5648]'
                   }`}
                 >
                   {view === 'feed' ? t('nav.feed') : t('nav.journalist_data')}
@@ -467,10 +467,10 @@ const App: React.FC = () => {
                     key={cat}
                     onClick={() => setSelectedCategory(cat)}
                     aria-current={isActive ? 'true' : undefined}
-                    className="text-[11px] font-bold tracking-wide uppercase transition-all px-3 py-1 rounded-full border shrink-0"
+                    className="text-[13px] font-semibold transition-all px-4 py-1.5 rounded-full border shrink-0"
                     style={isActive
                       ? { backgroundColor: color, borderColor: color, color: '#FFFFFF' }
-                      : { backgroundColor: 'transparent', borderColor: '#1E1E2A', color: '#A8A8C0' }
+                      : { backgroundColor: 'white', borderColor: '#E8E2D6', color: '#5C5648' }
                     }
                   >
                     {t(`categories.${cat}`)}
@@ -478,8 +478,8 @@ const App: React.FC = () => {
                 );
               })}
             </div>
-            <div className="pointer-events-none absolute left-0 top-0 h-full w-8 bg-gradient-to-r from-[#111118] to-transparent" aria-hidden="true" />
-            <div className="pointer-events-none absolute right-0 top-0 h-full w-8 bg-gradient-to-l from-[#111118] to-transparent" aria-hidden="true" />
+            <div className="pointer-events-none absolute left-0 top-0 h-full w-8 bg-gradient-to-r from-white to-transparent" aria-hidden="true" />
+            <div className="pointer-events-none absolute right-0 top-0 h-full w-8 bg-gradient-to-l from-white to-transparent" aria-hidden="true" />
           </div>
         </div>
 
@@ -487,7 +487,7 @@ const App: React.FC = () => {
         {regions.length > 0 && scrollState === 'top' && activeView === 'feed' && (
           <div className="max-w-6xl mx-auto px-6 pb-3">
             <div className="flex gap-2 whitespace-nowrap overflow-x-auto scrollbar-hide items-center">
-              <span className="text-[10px] text-[#0057FF] font-bold tracking-widest uppercase shrink-0">
+              <span className="text-[12px] text-[#6B85C7] font-semibold shrink-0">
                 📍 {t('header.region_label')}
               </span>
               {regions.map(region => (
@@ -495,10 +495,10 @@ const App: React.FC = () => {
                   key={region}
                   onClick={() => setSelectedRegion(region)}
                   aria-current={selectedRegion === region ? 'true' : undefined}
-                  className={`text-[10px] font-bold tracking-wide uppercase px-3 py-1 border rounded-full transition-all ${
+                  className={`text-[12px] font-semibold px-3 py-1 border rounded-full transition-all ${
                     selectedRegion === region
-                      ? 'border-[#0057FF] text-white bg-[#0057FF]'
-                      : 'border-[#1E1E2A] text-[#A8A8C0] hover:border-[#0057FF]/60'
+                      ? 'border-[#6B85C7] text-white bg-[#6B85C7]'
+                      : 'border-[#E8E2D6] text-[#5C5648] bg-white hover:border-[#6B85C7]/60'
                   }`}
                 >
                   {region === 'All Regions' ? t('header.all_regions') : region}
@@ -512,11 +512,11 @@ const App: React.FC = () => {
         {activeFilters.length > 0 && scrollState === 'top' && activeView === 'feed' && (
           <div className="max-w-6xl mx-auto px-6 pb-3">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-[10px] text-[#0057FF] font-bold tracking-widest uppercase shrink-0">
+              <span className="text-[12px] text-[#6B85C7] font-semibold shrink-0">
                 Active filters:
               </span>
               {activeFilters.map(f => (
-                <span key={f.id} className="flex items-center gap-1.5 text-[10px] font-bold tracking-wide uppercase px-2.5 py-1 bg-[#0057FF]/20 border border-[#0057FF]/40 text-white rounded-full">
+                <span key={f.id} className="flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1 bg-[#D8E0F0] border border-[#6B85C7]/40 text-[#5269A8] rounded-full">
                   {f.name}
                   <button
                     onClick={() => handleToggleFilter(f.id)}
@@ -542,20 +542,20 @@ const App: React.FC = () => {
               {[0, 1, 2].map(i => (
                 <div
                   key={i}
-                  className="w-2 h-2 rounded-full bg-[#0057FF]"
+                  className="w-2 h-2 rounded-full bg-[#6B85C7]"
                   style={{ animation: `bounce 1.2s ease-in-out ${i * 0.2}s infinite` }}
                   aria-hidden="true"
                 />
               ))}
             </div>
-            <p className="text-[#505070] text-sm font-bold tracking-widest uppercase mono">Loading feed…</p>
+            <p className="text-[#8A826F] text-sm font-medium">Loading feed…</p>
           </div>
         ) : error ? (
-          <div className="py-24 text-center border-2 border-dashed border-[#0057FF]/30 rounded-xl">
-            <p className="text-[#A8A8C0] mono text-sm mb-6 font-bold uppercase tracking-widest">{t(error)}</p>
+          <div className="py-24 text-center border-2 border-dashed border-[#6B85C7]/30 rounded-xl">
+            <p className="text-[#5C5648] text-sm mb-6 font-medium">{t(error)}</p>
             <button
               onClick={loadNews}
-              className="text-[#0057FF] font-black underline underline-offset-8 hover:text-white transition-colors uppercase tracking-widest text-xs focus:outline-none focus:ring-2 focus:ring-[#0057FF]"
+              className="text-[#6B85C7] font-semibold underline underline-offset-4 hover:text-[#5269A8] transition-colors text-sm focus:outline-none"
             >
               {t('feed.try_again')}
             </button>
@@ -575,9 +575,9 @@ const App: React.FC = () => {
               ))}
             </div>
             {filteredArticles.length === 0 && (
-              <div className="py-32 text-center border border-[#1E1E2A] rounded-xl">
-                <p className="text-[#A8A8C0] text-lg mb-2">{t('feed.no_articles')}</p>
-                <p className="text-[#505070] text-sm">
+              <div className="py-32 text-center border border-[#E8E2D6] rounded-xl bg-white">
+                <p className="text-[#5C5648] text-lg mb-2">{t('feed.no_articles')}</p>
+                <p className="text-[#8A826F] text-sm">
                   {selectedCategory !== 'ALL' ? t('feed.no_articles_category') : ''}
                   {selectedRegion !== 'All Regions' ? t('feed.no_articles_region') : ''}
                   {t('feed.no_articles_broaden')}
@@ -634,11 +634,11 @@ const App: React.FC = () => {
 
       {/* Toast */}
       {toast && (
-        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 bg-[#111118] border border-[#1E1E2A] text-white text-[11px] font-bold tracking-widest uppercase px-5 py-3 flex items-center gap-4 shadow-lg rounded-xl">
+        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 bg-white border border-[#E8E2D6] text-[#1F1B16] text-[13px] font-medium px-5 py-3 flex items-center gap-4 shadow-lg rounded-xl">
           <span>{toast}</span>
           <button
             onClick={() => { setShowLogin(true); setToast(null); }}
-            className="text-[#0057FF] hover:underline shrink-0"
+            className="text-[#6B85C7] hover:text-[#5269A8] font-semibold shrink-0"
           >
             Sign In
           </button>

@@ -14,18 +14,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppContext } from '../context/AppContext';
 import { RootStackParamList } from '../App';
-
-const COLORS = {
-  bg: '#0A0A0F',
-  surface: '#111118',
-  surfaceRaised: '#16161F',
-  border: '#1E1E2A',
-  primary: '#0057FF',
-  breaking: '#FF3333',
-  text: '#FFFFFF',
-  textSub: '#A8A8C0',
-  textMuted: '#505070',
-};
+import { COLORS } from '../theme';
 
 const LANGUAGES = [
   { code: 'en', label: 'English', native: 'English' },
@@ -58,7 +47,7 @@ export default function SettingsScreen({ navigation }: Props) {
 
   return (
     <View style={[styles.container, { direction: isRTL ? 'rtl' : 'ltr' }]}>
-      <StatusBar barStyle="light-content" backgroundColor={COLORS.bg} />
+      <StatusBar barStyle="dark-content" backgroundColor={COLORS.bg} />
 
       <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
         <Pressable style={styles.backBtn} onPress={() => navigation.goBack()}>

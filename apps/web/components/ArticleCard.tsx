@@ -9,14 +9,14 @@ const LOCALE_MAP: Record<LangCode, string> = {
   en: 'en-US', he: 'he-IL', fr: 'fr-FR', ru: 'ru-RU', ar: 'ar-SA',
 };
 
-const CATEGORY_COLORS: Record<string, string> = {
-  Politics: '#FF6B35',
-  Economy: '#00C896',
-  Health: '#FF4D6D',
-  Technology: '#0057FF',
-  Environment: '#3DBF6E',
-  'Defence and Security': '#9747FF',
-  Sports: '#FFB800',
+const CATEGORY_COLORS: Record<string, { solid: string; soft: string; ink: string }> = {
+  Politics:               { solid: '#C06B4A', soft: '#F3DDD0', ink: '#8A3D1E' },
+  Economy:                { solid: '#5A9A8A', soft: '#DCEDE8', ink: '#36695C' },
+  Health:                 { solid: '#C4798A', soft: '#F1DAE0', ink: '#8B4757' },
+  Technology:             { solid: '#6B85C7', soft: '#D8E0F0', ink: '#3F5490' },
+  Environment:            { solid: '#7BA381', soft: '#DDE9DE', ink: '#466B4D' },
+  'Defence and Security': { solid: '#8A7AB0', soft: '#E4DEEC', ink: '#564479' },
+  Sports:                 { solid: '#C99A4C', soft: '#F2E4C8', ink: '#8A6824' },
 };
 
 function normalizeDate(dateString: string): Date {
@@ -64,22 +64,22 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, onReadMore, language
 
   const credScore = article.credibility_score ?? 0;
   const credTier = credScore >= 7
-    ? { color: '#15803d' }
+    ? { color: '#6B9B7B' }
     : credScore >= 4
-    ? { color: '#0057FF' }
-    : { color: '#FF3333' };
+    ? { color: '#C99A4C' }
+    : { color: '#C46A5E' };
 
   const langContent = resolveLangKey(article.languages, selectedLanguage);
   const title = langContent?.title || article.title || article.header || t('article.untitled');
   const summary = langContent?.summary || article.summary || article.content || t('article.no_summary');
 
-  const categoryColor = CATEGORY_COLORS[article.category] ?? '#0057FF';
+  const cat = CATEGORY_COLORS[article.category] ?? { solid: '#6B85C7', soft: '#D8E0F0', ink: '#3F5490' };
   const isRTL = selectedLanguage === 'he' || selectedLanguage === 'ar';
 
   return (
     <article
-      className="flex gap-3 p-3 rounded-xl border border-[#1E1E2A] bg-[#111118] cursor-pointer hover:border-[#2A2A3A] transition-colors relative overflow-hidden"
-      style={article.isUrgent ? { borderLeft: '3px solid #FF3333' } : undefined}
+      className="flex gap-3 p-3 rounded-xl border border-[#E8E2D6] bg-white cursor-pointer hover:border-[#D4CDBD] hover:shadow-md transition-all relative overflow-hidden"
+      style={article.isUrgent ? { borderLeft: '3px solid #C46A5E', boxShadow: 'var(--shadow-sm)' } : { boxShadow: 'var(--shadow-sm)' }}
       onClick={() => onReadMore(article.id)}
       dir={isRTL ? 'rtl' : 'ltr'}
     >
@@ -89,21 +89,21 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, onReadMore, language
         <div className="flex items-center gap-2 flex-wrap">
           {article.isUrgent ? (
             <span
-              className="category-badge text-white"
-              style={{ backgroundColor: '#FF3333' }}
+              className="category-badge"
+              style={{ backgroundColor: '#F5D9D2', color: '#C46A5E' }}
             >
               {t('article.breaking')}
             </span>
           ) : (
             <span
               className="category-badge"
-              style={{ backgroundColor: `${categoryColor}22`, color: categoryColor }}
+              style={{ backgroundColor: cat.soft, color: cat.ink }}
             >
               {t(`categories.${article.category}`, { defaultValue: article.category })}
             </span>
           )}
           {article.region && (
-            <span className="text-[10px] text-[#505070] flex items-center gap-0.5">
+            <span className="text-[11px] text-[#8A826F] flex items-center gap-0.5">
               <span aria-hidden="true">📍</span> {article.region}
             </span>
           )}
@@ -111,7 +111,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, onReadMore, language
 
         {/* Title */}
         <h3
-          className="text-sm font-bold text-white leading-snug line-clamp-2"
+          className="text-sm font-bold text-[#1F1B16] leading-snug line-clamp-2"
           tabIndex={0}
           onKeyDown={(e) => e.key === 'Enter' && onReadMore(article.id)}
           role="button"
@@ -122,20 +122,20 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, onReadMore, language
         </h3>
 
         {/* Summary */}
-        <p className="text-[12px] text-[#A8A8C0] leading-relaxed line-clamp-2">
+        <p className="text-[13px] text-[#5C5648] leading-relaxed line-clamp-2">
           {summary}
         </p>
 
         {/* Meta row */}
         <div className="flex items-center gap-2 mt-auto pt-1">
-          <span className="text-[11px] text-[#505070] font-medium truncate">
+          <span className="text-[11px] text-[#8A826F] font-medium truncate">
             {article.source || t('article.default_source')}
           </span>
-          <span className="text-[#1E1E2A]" aria-hidden="true">·</span>
-          <span className="text-[11px] text-[#505070] shrink-0">
+          <span className="text-[#D4CDBD]" aria-hidden="true">·</span>
+          <span className="text-[11px] text-[#8A826F] shrink-0">
             {timeAgo(article.last_updated || article.timestamp || article.date)}
           </span>
-          <span className="text-[#1E1E2A]" aria-hidden="true">·</span>
+          <span className="text-[#D4CDBD]" aria-hidden="true">·</span>
           {/* Credibility dots */}
           <div className="relative flex items-center shrink-0">
             <button
@@ -161,10 +161,10 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, onReadMore, language
             {showCredibilityTooltip && (
               <div
                 role="tooltip"
-                className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-56 bg-[#16161F] border border-[#1E1E2A] rounded-lg p-3 z-50 shadow-xl"
+                className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-56 bg-white border border-[#E8E2D6] rounded-lg p-3 z-50 shadow-lg"
                 onClick={(e) => e.stopPropagation()}
               >
-                <p className="text-white text-[11px] leading-relaxed">
+                <p className="text-[#5C5648] text-[11px] leading-relaxed">
                   {t('article.credibility_tooltip', { score: credScore.toFixed(1) })}
                 </p>
               </div>
@@ -188,9 +188,9 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, onReadMore, language
           ) : (
             <div
               className="w-full h-full flex items-center justify-center"
-              style={{ backgroundColor: `${categoryColor}22` }}
+              style={{ background: `linear-gradient(135deg, ${cat.soft}, #FFFDF9)` }}
             >
-              <span style={{ color: categoryColor, fontSize: 22 }} aria-hidden="true">
+              <span style={{ color: cat.ink, fontSize: 22 }} aria-hidden="true">
                 {article.category === 'Politics' ? '🏛' :
                  article.category === 'Economy' ? '📈' :
                  article.category === 'Health' ? '🏥' :
@@ -208,7 +208,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, onReadMore, language
           <button
             onClick={(e) => { e.stopPropagation(); onPinToggle(article.id, title); }}
             className={`p-1 transition-colors focus:outline-none rounded ${
-              isPinned ? 'text-[#0057FF]' : 'text-[#505070] hover:text-[#A8A8C0]'
+              isPinned ? 'text-[#6B85C7]' : 'text-[#8A826F] hover:text-[#5C5648]'
             }`}
             aria-label={isPinned ? `Unpin article: ${title}` : `Pin article: ${title}`}
             aria-pressed={isPinned}

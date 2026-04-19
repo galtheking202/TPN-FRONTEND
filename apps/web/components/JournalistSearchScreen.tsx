@@ -3,14 +3,14 @@ import React, { useMemo, useState } from 'react';
 // ─── Theme ────────────────────────────────────────────────────────────────────
 
 const CATEGORY_COLORS: Record<string, string> = {
-  Politics: '#FF6B35',
+  Politics: '#C06B4A',
   Economy: '#00C896',
   Health: '#FF4D6D',
-  Technology: '#0057FF',
+  Technology: '#6B85C7',
   Environment: '#3DBF6E',
-  'Defence and Security': '#9747FF',
+  'Defence and Security': '#8A7AB0',
   Sports: '#FFB800',
-  Intelligence: '#FF3333',
+  Intelligence: '#C46A5E',
   Cyber: '#00D4FF',
   Finance: '#00C896',
 };
@@ -222,7 +222,7 @@ function formatLocalTime(dateStr: string): string {
 function credibilityColor(score: number): string {
   if (score >= 7) return '#00C896';
   if (score >= 4) return '#FFB800';
-  return '#FF3333';
+  return '#C46A5E';
 }
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
@@ -240,7 +240,7 @@ function CredibilityBar({ score }: { score: number }) {
               height: 5,
               borderRadius: 2,
               backgroundColor: i < score ? color : 'transparent',
-              border: `1px solid ${i < score ? color : '#1E1E2A'}`,
+              border: `1px solid ${i < score ? color : '#E8E2D6'}`,
             }}
           />
         ))}
@@ -254,32 +254,32 @@ function CredibilityBar({ score }: { score: number }) {
 
 function ReportCard({ item }: { item: IngestReport }) {
   const [expanded, setExpanded] = useState(false);
-  const catColor = CATEGORY_COLORS[item.category] ?? '#0057FF';
+  const catColor = CATEGORY_COLORS[item.category] ?? '#6B85C7';
 
   return (
     <article
       onClick={() => setExpanded((v) => !v)}
-      className="bg-[#111118] border border-[#1E1E2A] rounded-xl p-4 cursor-pointer hover:border-[#2A2A3A] transition-colors"
-      style={item.isUrgent ? { borderLeftWidth: 3, borderLeftColor: '#FF3333' } : {}}
+      className="bg-[#FFFFFF] border border-[#E8E2D6] rounded-xl p-4 cursor-pointer hover:border-[#D4CDBD] transition-colors"
+      style={item.isUrgent ? { borderLeftWidth: 3, borderLeftColor: '#C46A5E' } : {}}
     >
       {/* Top row */}
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2 min-w-0">
           <div
             className="flex items-center justify-center rounded shrink-0"
-            style={{ width: 22, height: 22, background: '#16161F', border: '1px solid #1E1E2A', color: '#505070' }}
+            style={{ width: 22, height: 22, background: '#FFFDF9', border: '1px solid #E8E2D6', color: '#8A826F' }}
           >
             {CHANNEL_TYPE_ICONS[item.channelType]}
           </div>
-          <span className="text-white text-[13px] font-bold truncate">{item.channel}</span>
+          <span className="text-[#1F1B16] text-[13px] font-bold truncate">{item.channel}</span>
           <span
             className="text-[10px] font-semibold shrink-0 px-1.5 py-0.5 rounded"
-            style={{ color: '#505070', background: '#16161F', border: '1px solid #1E1E2A' }}
+            style={{ color: '#8A826F', background: '#FFFDF9', border: '1px solid #E8E2D6' }}
           >
             {item.channelType}
           </span>
         </div>
-        <span className="text-[10px] text-[#505070] shrink-0 ml-3">
+        <span className="text-[10px] text-[#8A826F] shrink-0 ml-3">
           Last updated: {formatLocalTime(item.lastUpdated)}
         </span>
       </div>
@@ -289,7 +289,7 @@ function ReportCard({ item }: { item: IngestReport }) {
         {item.isUrgent && (
           <span
             className="text-[9px] font-black tracking-widest px-1.5 py-0.5 rounded"
-            style={{ color: '#FF3333', background: '#FF333322', border: '1px solid #FF3333' }}
+            style={{ color: '#C46A5E', background: '#C46A5E22', border: '1px solid #C46A5E' }}
           >
             ● URGENT
           </span>
@@ -302,7 +302,7 @@ function ReportCard({ item }: { item: IngestReport }) {
         </span>
         <span
           className="flex items-center gap-1 text-[9px] font-semibold px-1.5 py-0.5 rounded"
-          style={{ color: '#505070', background: '#16161F', border: '1px solid #1E1E2A' }}
+          style={{ color: '#8A826F', background: '#FFFDF9', border: '1px solid #E8E2D6' }}
         >
           <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
@@ -313,7 +313,7 @@ function ReportCard({ item }: { item: IngestReport }) {
 
       {/* Report text */}
       <p
-        className="text-[#A8A8C0] text-[13px] leading-relaxed mb-1"
+        className="text-[#5C5648] text-[13px] leading-relaxed mb-1"
         style={{
           display: '-webkit-box',
           WebkitLineClamp: expanded ? 'unset' : 3,
@@ -325,7 +325,7 @@ function ReportCard({ item }: { item: IngestReport }) {
       </p>
 
       {!expanded && (
-        <p className="text-[#505070] text-[10px] font-semibold text-right mb-1">
+        <p className="text-[#8A826F] text-[10px] font-semibold text-right mb-1">
           Click to expand ↓
         </p>
       )}
@@ -337,7 +337,7 @@ function ReportCard({ item }: { item: IngestReport }) {
             <span
               key={kw}
               className="text-[10px] font-semibold px-2 py-0.5 rounded"
-              style={{ color: '#9747FF', background: '#9747FF18', border: '1px solid #9747FF44' }}
+              style={{ color: '#8A7AB0', background: '#9747FF18', border: '1px solid #9747FF44' }}
             >
               # {kw}
             </span>
@@ -346,11 +346,11 @@ function ReportCard({ item }: { item: IngestReport }) {
       )}
 
       {/* Credibility */}
-      <div className="flex items-center gap-2 pt-2.5 mt-1 border-t border-[#1E1E2A]">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#505070" strokeWidth="2">
+      <div className="flex items-center gap-2 pt-2.5 mt-1 border-t border-[#E8E2D6]">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#8A826F" strokeWidth="2">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
         </svg>
-        <span className="text-[10px] font-semibold text-[#505070] mr-1">Credibility</span>
+        <span className="text-[10px] font-semibold text-[#8A826F] mr-1">Credibility</span>
         <CredibilityBar score={item.credibility} />
       </div>
     </article>
@@ -413,15 +413,15 @@ export default function JournalistSearchScreen({ onClose }: Props) {
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#0A0A0F] flex flex-col overflow-hidden">
+    <div className="fixed inset-0 z-50 bg-[#FAF7F2] flex flex-col overflow-hidden">
 
       {/* ── Header ── */}
-      <div className="border-b border-[#1E1E2A] bg-[#111118] px-6 py-3 flex items-center justify-between shrink-0">
+      <div className="border-b border-[#E8E2D6] bg-[#FFFFFF] px-6 py-3 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3">
           <button
             onClick={onClose}
-            className="flex items-center justify-center rounded-lg hover:bg-[#16161F] transition-colors focus:outline-none"
-            style={{ width: 32, height: 32, border: '1px solid #1E1E2A', color: '#A8A8C0' }}
+            className="flex items-center justify-center rounded-lg hover:bg-[#FFFDF9] transition-colors focus:outline-none"
+            style={{ width: 32, height: 32, border: '1px solid #E8E2D6', color: '#5C5648' }}
             aria-label="Back"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -430,35 +430,35 @@ export default function JournalistSearchScreen({ onClose }: Props) {
           </button>
           <div
             className="flex items-center justify-center rounded-lg shrink-0"
-            style={{ width: 32, height: 32, background: '#0057FF18', border: '1px solid #0057FF44' }}
+            style={{ width: 32, height: 32, background: '#6B85C718', border: '1px solid #6B85C744' }}
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0057FF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B85C7" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
             </svg>
           </div>
           <div>
-            <p className="text-white text-[13px] font-black tracking-[0.12em]">INGEST SEARCH</p>
-            <p className="text-[#505070] text-[10px] font-medium">Journalist Intelligence Tool</p>
+            <p className="text-[#1F1B16] text-[13px] font-black tracking-[0.12em]">INGEST SEARCH</p>
+            <p className="text-[#8A826F] text-[10px] font-medium">Journalist Intelligence Tool</p>
           </div>
         </div>
         <div
           className="flex items-center gap-1.5 px-2 py-1 rounded-lg"
-          style={{ background: '#16161F', border: '1px solid #1E1E2A' }}
+          style={{ background: '#FFFDF9', border: '1px solid #E8E2D6' }}
         >
-          <div className="w-1.5 h-1.5 rounded-full bg-[#505070]" />
-          <span className="text-[9px] font-bold tracking-widest text-[#505070]">MOCK DATA</span>
+          <div className="w-1.5 h-1.5 rounded-full bg-[#8A826F]" />
+          <span className="text-[9px] font-bold tracking-widest text-[#8A826F]">MOCK DATA</span>
         </div>
       </div>
 
       {/* ── Controls ── */}
-      <div className="border-b border-[#1E1E2A] bg-[#0A0A0F] px-6 py-3 space-y-3 shrink-0">
+      <div className="border-b border-[#E8E2D6] bg-[#FAF7F2] px-6 py-3 space-y-3 shrink-0">
 
         {/* Search bar */}
         <div
           className="flex items-center gap-2 rounded-xl px-3"
-          style={{ background: '#111118', border: '1px solid #1E1E2A', height: 42 }}
+          style={{ background: '#FFFFFF', border: '1px solid #E8E2D6', height: 42 }}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#505070" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8A826F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>
           <input
@@ -466,11 +466,11 @@ export default function JournalistSearchScreen({ onClose }: Props) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search reports, channels, keywords…"
-            className="flex-1 bg-transparent text-white text-sm placeholder-[#505070] focus:outline-none"
+            className="flex-1 bg-transparent text-[#1F1B16] text-sm placeholder-[#8A826F] focus:outline-none"
             autoComplete="off"
           />
           {query && (
-            <button onClick={() => setQuery('')} className="text-[#505070] hover:text-white transition-colors">
+            <button onClick={() => setQuery('')} className="text-[#8A826F] hover:text-[#1F1B16] transition-colors">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
               </svg>
@@ -481,7 +481,7 @@ export default function JournalistSearchScreen({ onClose }: Props) {
         {/* Category chips */}
         <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-0.5">
           {categories.map((cat) => {
-            const color = CATEGORY_COLORS[cat] ?? '#0057FF';
+            const color = CATEGORY_COLORS[cat] ?? '#6B85C7';
             const active = activeCategory === cat;
             return (
               <button
@@ -502,7 +502,7 @@ export default function JournalistSearchScreen({ onClose }: Props) {
 
         {/* Keyword chips */}
         <div>
-          <p className="text-[9px] font-bold tracking-[0.15em] text-[#505070] mb-1.5">KEYWORDS</p>
+          <p className="text-[9px] font-bold tracking-[0.15em] text-[#8A826F] mb-1.5">KEYWORDS</p>
           <div className="flex gap-1.5 overflow-x-auto scrollbar-hide pb-0.5">
             {ALL_KEYWORDS.map((kw) => {
               const active = activeKeywords.includes(kw);
@@ -512,9 +512,9 @@ export default function JournalistSearchScreen({ onClose }: Props) {
                   onClick={() => toggleKeyword(kw)}
                   className="shrink-0 text-[11px] font-semibold px-2 py-0.5 rounded transition-colors focus:outline-none"
                   style={{
-                    color: active ? '#9747FF' : '#505070',
-                    background: active ? '#9747FF22' : '#111118',
-                    border: `1px solid ${active ? '#9747FF88' : '#1E1E2A'}`,
+                    color: active ? '#8A7AB0' : '#8A826F',
+                    background: active ? '#9747FF22' : '#FFFFFF',
+                    border: `1px solid ${active ? '#9747FF88' : '#E8E2D6'}`,
                   }}
                 >
                   # {kw}
@@ -527,14 +527,14 @@ export default function JournalistSearchScreen({ onClose }: Props) {
 
       {/* ── Results header ── */}
       <div className="flex items-center justify-between px-6 py-2.5 shrink-0">
-        <span className="text-[11px] font-semibold text-[#505070] tracking-wide">
+        <span className="text-[11px] font-semibold text-[#8A826F] tracking-wide">
           {results.length} {results.length === 1 ? 'report' : 'reports'} found
         </span>
         {hasFilters && (
           <button
             onClick={clearAll}
-            className="flex items-center gap-1 text-[11px] font-semibold text-[#505070] hover:text-white transition-colors px-2 py-1 rounded focus:outline-none"
-            style={{ border: '1px solid #1E1E2A', background: '#111118' }}
+            className="flex items-center gap-1 text-[11px] font-semibold text-[#8A826F] hover:text-[#1F1B16] transition-colors px-2 py-1 rounded focus:outline-none"
+            style={{ border: '1px solid #E8E2D6', background: '#FFFFFF' }}
           >
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
@@ -548,11 +548,11 @@ export default function JournalistSearchScreen({ onClose }: Props) {
       <div className="flex-1 overflow-y-auto px-6 pb-8 space-y-3">
         {results.length === 0 ? (
           <div className="flex flex-col items-center justify-center pt-24 gap-3 text-center">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#505070" strokeWidth="1.5">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#8A826F" strokeWidth="1.5">
               <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
             </svg>
-            <p className="text-[#A8A8C0] font-bold text-base">No reports found</p>
-            <p className="text-[#505070] text-sm leading-relaxed max-w-xs">
+            <p className="text-[#5C5648] font-bold text-base">No reports found</p>
+            <p className="text-[#8A826F] text-sm leading-relaxed max-w-xs">
               Try a different query or adjust your keyword filters.
             </p>
           </div>
